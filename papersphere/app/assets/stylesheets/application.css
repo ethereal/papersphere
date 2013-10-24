@@ -15,7 +15,7 @@
 .page-content {
     margin: 1em;
 }
-
+/* Bootstrap Overrides */
 .navbar {
     background-color: black;
 }
@@ -33,4 +33,8 @@
 .navbar-default .navbar-nav>.open>a:focus {
     color: white;
     background-color: black;
+}
+
+.form-control {
+    width: auto;
 }
