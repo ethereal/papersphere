@@ -1,8 +1,10 @@
 require 'test_helper'
+include Devise::TestHelpers
 
 class PapersControllerTest < ActionController::TestCase
   setup do
     @paper = papers(:one)
+    sign_in User.first
   end
 
   test "should get index" do

@@ -1,8 +1,10 @@
 require 'test_helper'
+include Devise::TestHelpers
 
 class ReadingListsControllerTest < ActionController::TestCase
   setup do
     @reading_list = reading_lists(:one)
+    sign_in User.first
   end
 
   test "should get index" do

@@ -1,8 +1,10 @@
 require 'test_helper'
+include Devise::TestHelpers
 
 class GroupsControllerTest < ActionController::TestCase
   setup do
     @group = groups(:one)
+    sign_in User.first
   end
 
   test "should get index" do
