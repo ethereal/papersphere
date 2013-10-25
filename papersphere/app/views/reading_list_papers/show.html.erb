@@ -1,0 +1,15 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <b>Reading list:</b>
+  <%= @reading_list_paper.reading_list_id %>
+</p>
+
+<p>
+  <b>Paper:</b>
+  <%= @reading_list_paper.paper_id %>
+</p>
+
+
+<%= link_to 'Edit', edit_reading_list_paper_path(@reading_list_paper) %> |
+<%= link_to 'Back', reading_list_papers_path %>

@@ -1,5 +1,5 @@
 class ReadingList < ActiveRecord::Base
   belongs_to :user
-  has_and_belongs_to_many :papers
+  has_many :reading_list_papers, :dependent => :destroy
   attr_accessible :name
 end

@@ -17,14 +17,23 @@ paper2 = Paper.create(:title => 'Test Paper 2', :author => 'Author 2', :year => 
 paper3 = Paper.create(:title => 'Test Paper 3', :author => 'Author 3', :year => 2013, :publication => 'Publication 3', :url => 'http://foo3.com')
 
 list = ReadingList.create(:name => 'Distributed Systems')
-paper1.reading_lists = [list]
-paper2.reading_lists = [list]
-paper3.reading_lists = [list]
 list.user = user
-list.save!
-paper1.save!
-paper2.save!
-paper3.save!
+list.save
+
+list_item1 = ReadingListPaper.create
+list_item1.reading_list = list
+list_item1.paper = paper1
+list_item1.save
+
+list_item2 = ReadingListPaper.create
+list_item2.reading_list = list
+list_item2.paper = paper2
+list_item2.save
+
+list_item3 = ReadingListPaper.create
+list_item3.reading_list = list
+list_item3.paper = paper3
+list_item3.save
 
 group1 = Group.create(:name => 'My Project Team')
 group1.users = [user1, user2, user3]

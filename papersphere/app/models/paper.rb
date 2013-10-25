@@ -1,4 +1,4 @@
 class Paper < ActiveRecord::Base
-  has_and_belongs_to_many :reading_lists
+  has_many :reading_list_papers, :dependent => :destroy
   attr_accessible :author, :publication, :title, :url, :year
 end
