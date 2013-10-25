@@ -36,11 +36,39 @@ list_item3.paper = paper3
 list_item3.save
 
 group1 = Group.create(:name => 'My Project Team')
-group1.users = [user1, user2, user3]
 group1.owner = user
-group1.save!
+group1.save
 
 group2 = Group.create(:name => 'People I Hate')
-group2.users = [user, user2, user3]
 group2.owner = user1
-group2.save!
+group2.save
+
+member1 = GroupMember.create
+member1.group = group1
+member1.user = user1
+member1.save
+
+member2 = GroupMember.create
+member2.group = group1
+member2.user = user2
+member2.save
+
+member3 = GroupMember.create
+member3.group = group1
+member3.user = user3
+member3.save
+
+member4 = GroupMember.create
+member4.group = group2
+member4.user = user
+member4.save
+
+member5 = GroupMember.create
+member5.group = group2
+member5.user = user2
+member5.save
+
+member6 = GroupMember.create
+member6.group = group2
+member6.user = user3
+member6.save

@@ -1,5 +1,8 @@
 Papersphere::Application.routes.draw do
   
+  resources :group_members
+
+
   resources :reading_list_papers
 
 

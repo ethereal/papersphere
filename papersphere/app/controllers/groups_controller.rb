@@ -14,6 +14,8 @@ class GroupsController < ApplicationController
   # GET /groups/1.json
   def show
     @group = Group.find(params[:id])
+    @group_member = GroupMember.new
+    @group_member.group = @group
 
     respond_to do |format|
       format.html # show.html.erb
@@ -57,14 +59,6 @@ class GroupsController < ApplicationController
   # PUT /groups/1.json
   def update
     @group = Group.find(params[:id])
-    if params[:add_group_member]
-      email = params[:member_email]
-      user = User.find_by_email(email)
-      if user && !@group.users.include?(user)
-        @group.users << user
-        @group.save!
-      end
-    end
 
     respond_to do |format|
       if @group.update_attributes(params[:group])

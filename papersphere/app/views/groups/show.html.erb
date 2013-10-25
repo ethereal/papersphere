@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <p>
   <b>Name:</b>
   <%= @group.name %>
@@ -10,14 +8,16 @@
     <tr>
         <th>E-mail</th>
     </tr>
-    <%= render @group.users %>
+    <%= render @group.group_members %>
 </table>
 
-<%= form_for(@group, :method => :put) do |f| %>
+<%= form_for @group_member do |f| %>
     <div class="field">
         New Group Member (E-mail):<br />
         <input name="member_email" type="text"/>
-        <input name="add_group_member" value="true" type="hidden"/>
+    </div>
+    <div class="field">
+        <%= f.hidden_field :group_id %>
     </div>
     <div class="actions">
         <%= f.submit %>
