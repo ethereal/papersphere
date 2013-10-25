@@ -11,7 +11,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131025003102) do
+ActiveRecord::Schema.define(:version => 20131025010511) do
+
+  create_table "papers", :force => true do |t|
+    t.string   "title"
+    t.string   "author"
+    t.integer  "year"
+    t.string   "publication"
+    t.string   "url"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+  end
+
+  create_table "papers_reading_lists", :force => true do |t|
+    t.integer "reading_list_id"
+    t.integer "paper_id"
+  end
 
   create_table "reading_lists", :force => true do |t|
     t.string   "name"
