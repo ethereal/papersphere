@@ -5,6 +5,26 @@
   <%= @group.name %>
 </p>
 
+<h3>Users</h3>
+<table border="1">
+    <tr>
+        <th>E-mail</th>
+    </tr>
+    <%= render @group.users %>
+</table>
+
+<%= form_for(@group, :method => :put) do |f| %>
+    <div class="field">
+        New Group Member (E-mail):<br />
+        <input name="member_email" type="text"/>
+        <input name="add_group_member" value="true" type="hidden"/>
+    </div>
+    <div class="actions">
+        <%= f.submit %>
+    </div>
+<% end %>
+
+
 
 <%= link_to 'Edit', edit_group_path(@group) %> |
 <%= link_to 'Back', groups_path %>
