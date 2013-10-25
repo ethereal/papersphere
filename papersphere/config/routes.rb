@@ -5,6 +5,6 @@ Papersphere::Application.routes.draw do
 
   devise_for :users
   
-  root to: 'home#index'
+  root to: 'reading_lists#index'
 
 end

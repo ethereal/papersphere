@@ -2,7 +2,8 @@ class ReadingListsController < ApplicationController
   # GET /reading_lists
   # GET /reading_lists.json
   def index
-    @reading_lists = ReadingList.all
+    @reading_lists = current_user.reading_lists
+    @reading_list = ReadingList.new
 
     respond_to do |format|
       format.html # index.html.erb
