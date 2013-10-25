@@ -6,6 +6,17 @@
   (<%= @reading_list.user.email %>)
 </p>
 
+<h3>Papers</h3>
+<table border="1">
+    <tr>
+        <th>Title</th>
+        <th>Authors</th>
+        <th>Year</th>
+        <th>Publication</th>
+    </tr>
+    <%= render @reading_list.papers %>
+</table>
+
 
 <%= link_to 'Edit', edit_reading_list_path(@reading_list) %> |
 <%= link_to 'Back', reading_lists_path %>
