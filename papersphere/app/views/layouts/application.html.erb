@@ -35,7 +35,9 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_user.email %><b class="caret"></b></a>
           <ul class="dropdown-menu">
-            <li><a href="#">Action</a></li>
+            <li><%= form_tag '/users/sign_out', method: :delete, "role" => "form" do %>
+              <%= submit_tag 'Log Out', "class" => "btn btn-primary" %>
+            <% end %></li>
             <li><a href="#">Another action</a></li>
           </ul>
         </li>
