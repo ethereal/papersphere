@@ -26,7 +26,12 @@ paper1.save!
 paper2.save!
 paper3.save!
 
-group = Group.create(:name => 'My Project Team')
-group.users = [user1, user2, user3]
-group.user = user
-group.save!
+group1 = Group.create(:name => 'My Project Team')
+group1.users = [user1, user2, user3]
+group1.owner = user
+group1.save!
+
+group2 = Group.create(:name => 'People I Hate')
+group2.users = [user, user2, user3]
+group2.owner = user1
+group2.save!
