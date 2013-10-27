@@ -2,6 +2,8 @@ require 'open-uri'
 
 module RemoteLibraryHelper
 
+  RESULTS_PER_PAGE = 20
+
   class ResultEntry
     attr_accessor :title, :author, :publication, :year
 
@@ -14,14 +16,13 @@ module RemoteLibraryHelper
   end
 
   class SearchResults
-    attr_reader :results, :count, :pos, :total, :results_per_page
+    attr_reader :results, :count, :pos, :total
 
-    def initialize(total, pos = 1, results_per_page = 20)
+    def initialize(total, pos = 1)
       @results = []
       @count = 0
       @pos = pos
       @total = total
-      @results_per_page = results_per_page
     end
 
     def add_entry(title, author, publication, year)
@@ -29,10 +30,18 @@ module RemoteLibraryHelper
       @results << entry
       @count += 1
     end
+
+    def get_paginated_results
+      current_page = ((@pos - 1) / RESULTS_PER_PAGE) + 1
+      WillPaginate::Collection.create(current_page, RESULTS_PER_PAGE, @total) do |pager|
+        pager.replace(@results)
+      end
+    end
   end
 
   class ACMHelper
-    def search(query, pos = 1)
+    def search(query, page)
+      pos = page * RESULTS_PER_PAGE - RESULTS_PER_PAGE + 1
       doc = Nokogiri::HTML(open("http://dl.acm.org/results.cfm?query=#{query}&start=#{pos}"))
       error = doc.css("span[style='background-color:yellow']")
       unless error.empty?
@@ -47,15 +56,17 @@ module RemoteLibraryHelper
       results_count = doc.css("table[class='small-text'] tr[valign='top'] td")
 
       total = results_count[0].text.split.last.gsub(',','').to_i
-      results = SearchResults.new(total, pos, 20)
+      results = SearchResults.new(total, pos)
 
       index = 0
       titles.each do |title|
         author_names = authors[index].css('a')
         if author_names.size > 1
           author_name = author_names[0].text + ' et al'
-        else
+        elsif author_names.size == 1
           author_name = author_names[0].text
+        else
+          author_name = authors[index].text
         end
         results.add_entry(title.text, author_name, publications[index].text, years[index * 2].text.split[1])
         index += 1
