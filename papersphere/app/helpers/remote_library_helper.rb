@@ -87,4 +87,39 @@ module RemoteLibraryHelper
     end
   end
 
+  class IEEEHelper
+    def search(query, page)
+      pos = page * RESULTS_PER_PAGE - RESULTS_PER_PAGE + 1
+      doc = Nokogiri::XML(open("http://ieeexplore.ieee.org/gateway/ipsSearch.jsp?querytext=#{query}&rs=#{pos}&hc=#{RESULTS_PER_PAGE}"))
+      error = doc.xpath('//Error')
+      unless error.empty?
+        return SearchResults.new(0)
+      end
+
+      elements = doc.xpath('//root/document')
+      total = doc.xpath('//root/totalfound').first.text.strip.to_i
+      results = SearchResults.new(total, pos)
+
+      elements.each do |element|
+        entry_id = element.xpath('punumber').first.text.strip
+        title = element.xpath('title').first.text.strip
+        authors = element.xpath('authors').first.text.strip
+        authors_list = authors.split(';')
+        if authors_list.count > 1
+          authors = authors_list[0].strip + ' et al'
+        end
+        publication = element.xpath('pubtitle').first.text.strip
+        year = element.xpath('py').first.text.strip.to_i
+        url = element.xpath('mdurl').first.text.strip
+        results.add_entry "IEEE_#{entry_id}",
+                          title,
+                          authors,
+                          publication,
+                          year,
+                          url
+      end
+      results
+    end
+  end
+
 end

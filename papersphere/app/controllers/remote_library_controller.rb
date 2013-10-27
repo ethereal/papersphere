@@ -1,10 +1,15 @@
 class RemoteLibraryController < ApplicationController
   def search
-    helper = RemoteLibraryHelper::ACMHelper.new
     if params[:page]
       page = params[:page].to_i
     else
       page = 1
+    end
+
+    if params[:db] == 'ieee'
+      helper = RemoteLibraryHelper::IEEEHelper.new
+    else
+      helper = RemoteLibraryHelper::ACMHelper.new
     end
 
     @results = helper.search(params[:query], page)

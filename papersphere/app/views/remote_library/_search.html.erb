@@ -10,15 +10,18 @@
         </tr>
         <% @results.results.each do |entry| %>
             <tr>
-                <td><%= button_to 'Add',
-                                  { :controller => 'reading_list_papers',
-                                  :paper_title => entry.title,
-                                  :paper_authors => entry.author,
-                                  :paper_publication => entry.publication,
-                                  :paper_year => entry.year,
-                                  :paper_url => entry.url,
-                                  :reading_list_id => params[:reading_list_id]},
-                                  :remote => true %></td>
+                <td>
+                    <%= form_tag({:controller => 'reading_list_papers'}, :remote => true, :method => :post) do %>
+                        <%= hidden_field_tag :reading_list_id, params[:reading_list_id] %>
+                        <%= hidden_field_tag :paper_title, entry.title %>
+                        <%= hidden_field_tag :paper_authors, entry.author %>
+                        <%= hidden_field_tag :paper_publication, entry.publication %>
+                        <%= hidden_field_tag :paper_year, entry.year %>
+                        <%= hidden_field_tag :paper_url, entry.url %>
+                        <%= hidden_field_tag :paper_unique_id, entry.entry_id %>
+                        <%= submit_tag 'Add', :disable_with => 'Please wait...', :class => 'submit' %>
+                    <% end %>
+                </td>
                 <td><%= entry.title %></td>
                 <td><%= entry.author %></td>
                 <td><%= entry.publication %></td>
@@ -26,7 +29,7 @@
             </tr>
         <% end %>
     </table>
-    <%= will_paginate @results.get_paginated_results, :params => {:controller => 'remote_library', :action => 'search', :query => params[:query], :reading_list_id => params[:reading_list_id]}, :remote => true %>
+    <%= will_paginate @results.get_paginated_results, :params => {:controller => 'remote_library', :action => 'search', :query => params[:query], :reading_list_id => params[:reading_list_id], :db => params[:db]}, :remote => true %>
 <% else %>
     <p>No matching results</p>
 <% end %>
