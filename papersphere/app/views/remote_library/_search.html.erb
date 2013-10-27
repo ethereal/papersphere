@@ -1,4 +1,5 @@
 <% if @results.count > 0 %>
+    <p>Showing <%= @results.pos %> - <%= @results.pos + @results.count - 1 %> of <%= @results.total %> results</p>
     <table>
         <tr>
             <th>Title</th>

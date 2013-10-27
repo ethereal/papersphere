@@ -14,13 +14,14 @@ module RemoteLibraryHelper
   end
 
   class SearchResults
-    attr_reader :results, :count, :pos, :total
+    attr_reader :results, :count, :pos, :total, :results_per_page
 
-    def initialize(pos = 1)
+    def initialize(total, pos = 1, results_per_page = 20)
       @results = []
       @count = 0
       @pos = pos
-      @total = 0
+      @total = total
+      @results_per_page = results_per_page
     end
 
     def add_entry(title, author, publication, year)
@@ -32,12 +33,10 @@ module RemoteLibraryHelper
 
   class ACMHelper
     def search(query, pos = 1)
-      results = SearchResults.new
-
       doc = Nokogiri::HTML(open("http://dl.acm.org/results.cfm?query=#{query}&start=#{pos}"))
       error = doc.css("span[style='background-color:yellow']")
-      if !error.empty?
-        return results
+      unless error.empty?
+        return SearchResults.new(0)
       end
 
       core = doc.xpath('//body/div/table/tr[3]/td/table/tr[3]/td[2]/table')
@@ -45,6 +44,10 @@ module RemoteLibraryHelper
       authors = doc.css("div[class='authors']")
       years = core.css("table[style='padding: 5px; 5px; 5px; 5px;'] tr[valign='top'] td[class='small-text']")
       publications = doc.css("div[class='addinfo']")
+      results_count = doc.css("table[class='small-text'] tr[valign='top'] td")
+
+      total = results_count[0].text.split.last.gsub(',','').to_i
+      results = SearchResults.new(total, pos, 20)
 
       index = 0
       titles.each do |title|
