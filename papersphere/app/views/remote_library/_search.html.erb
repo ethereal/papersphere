@@ -1,14 +1,24 @@
 <% if @results.count > 0 %>
     <p>Showing <%= @results.pos %> - <%= @results.pos + @results.count - 1 %> of <%= @results.total %> results</p>
-    <table>
+    <table width="100%" cellpadding="2px" cellspacing="2px">
         <tr>
-            <th>Title</th>
-            <th>Authors</th>
-            <th>Publication</th>
-            <th>Year</th>
+            <th width="5%"></th>
+            <th width="35%">Title</th>
+            <th width="15%">Authors</th>
+            <th width="40%">Publication</th>
+            <th width="5%">Year</th>
         </tr>
         <% @results.results.each do |entry| %>
             <tr>
+                <td><%= button_to 'Add',
+                                  { :controller => 'reading_list_papers',
+                                  :paper_title => entry.title,
+                                  :paper_authors => entry.author,
+                                  :paper_publication => entry.publication,
+                                  :paper_year => entry.year,
+                                  :paper_url => entry.url,
+                                  :reading_list_id => params[:reading_list_id]},
+                                  :remote => true %></td>
                 <td><%= entry.title %></td>
                 <td><%= entry.author %></td>
                 <td><%= entry.publication %></td>
@@ -16,7 +26,7 @@
             </tr>
         <% end %>
     </table>
-    <%= will_paginate @results.get_paginated_results, :params => {:controller => 'remote_library', :action => 'search', :query => params[:query]}, :remote => true %>
+    <%= will_paginate @results.get_paginated_results, :params => {:controller => 'remote_library', :action => 'search', :query => params[:query], :reading_list_id => params[:reading_list_id]}, :remote => true %>
 <% else %>
     <p>No matching results</p>
 <% end %>

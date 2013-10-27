@@ -1,17 +1,20 @@
 require 'open-uri'
+require 'cgi'
 
 module RemoteLibraryHelper
 
   RESULTS_PER_PAGE = 20
 
   class ResultEntry
-    attr_accessor :title, :author, :publication, :year
+    attr_accessor :entry_id, :title, :author, :publication, :year, :url
 
-    def initialize(title, author, publication, year)
+    def initialize(entry_id, title, author, publication, year, url)
+      @entry_id = entry_id
       @title = title
       @author = author
       @publication = publication
       @year = year
+      @url = url
     end
   end
 
@@ -25,8 +28,8 @@ module RemoteLibraryHelper
       @total = total
     end
 
-    def add_entry(title, author, publication, year)
-      entry = ResultEntry.new(title, author, publication, year)
+    def add_entry(entry_id, title, author, publication, year, url)
+      entry = ResultEntry.new(entry_id, title, author, publication, year, url)
       @results << entry
       @count += 1
     end
@@ -62,13 +65,22 @@ module RemoteLibraryHelper
       titles.each do |title|
         author_names = authors[index].css('a')
         if author_names.size > 1
-          author_name = author_names[0].text + ' et al'
+          author_name = author_names[0].text.strip + ' et al'
         elsif author_names.size == 1
-          author_name = author_names[0].text
+          author_name = author_names[0].text.strip
         else
-          author_name = authors[index].text
+          author_name = authors[index].text.strip
         end
-        results.add_entry(title.text, author_name, publications[index].text, years[index * 2].text.split[1])
+
+        href = title['href'].strip
+        entry_id = "ACM_#{href[href.index('?') + 1 .. -1]}"
+        url = "http://dl.acm.org/#{href}"
+        results.add_entry entry_id,
+                          title.text.strip,
+                          author_name,
+                          publications[index].text.strip,
+                          years[index * 2].text.split[1].strip,
+                          url
         index += 1
       end
       results

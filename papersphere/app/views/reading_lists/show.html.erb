@@ -7,18 +7,13 @@
 </p>
 
 <h3>Papers</h3>
-<table border="1">
-    <tr>
-        <th>Title</th>
-        <th>Authors</th>
-        <th>Year</th>
-        <th>Publication</th>
-    </tr>
-    <%= render @reading_list.reading_list_papers %>
-</table>
+<div id="paper-listing">
+    <%= render :partial => 'paper_list' %>
+</div>
 <br/>
 <%= form_tag({:action => 'search', :controller => 'remote_library'}, :remote => true, :'data-update-target' => 'update-container') do %>
     <%= text_field_tag 'query', nil, :class => 'textinput', :placeholder => 'Keywords'  %>
+    <%= hidden_field_tag 'reading_list_id', @reading_list.id %>
     <%= submit_tag 'Search', :disable_with => 'Please wait...', :class => 'submit' %>
 <% end %>
 <br/>
