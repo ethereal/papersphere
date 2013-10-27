@@ -1,5 +1,8 @@
 Papersphere::Application.routes.draw do
   
+  get 'remote_library/search'
+  post 'remote_library/search'
+
   resources :group_members
 
 

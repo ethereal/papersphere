@@ -16,7 +16,13 @@
     </tr>
     <%= render @reading_list.reading_list_papers %>
 </table>
-
+<br/>
+<%= form_tag({:action => 'search', :controller => 'remote_library'}, :remote => true, :'data-update-target' => 'update-container') do %>
+    <%= text_field_tag 'query', nil, :class => 'textinput', :placeholder => 'Keywords'  %>
+    <%= submit_tag 'Search', :disable_with => 'Please wait...', :class => 'submit' %>
+<% end %>
+<br/>
+<div id="update-container"></div>
 
 <%= link_to 'Edit', edit_reading_list_path(@reading_list) %> |
 <%= link_to 'Back', reading_lists_path %>

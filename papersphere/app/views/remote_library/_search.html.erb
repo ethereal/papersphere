@@ -1,0 +1,20 @@
+<% if @results.count > 0 %>
+    <table>
+        <tr>
+            <th>Title</th>
+            <th>Authors</th>
+            <th>Publication</th>
+            <th>Year</th>
+        </tr>
+        <% @results.results.each do |entry| %>
+            <tr>
+                <td><%= entry.title %></td>
+                <td><%= entry.author %></td>
+                <td><%= entry.publication %></td>
+                <td><%= entry.year %></td>
+            </tr>
+        <% end %>
+    </table>
+<% else %>
+    <p>No matching results</p>
+<% end %>
