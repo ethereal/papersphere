@@ -47,3 +47,7 @@ body {
 .pagination a {
     color: #67aaff;
 }
+
+.top-link:hover {
+    color: #6ecbff !important;
+}

@@ -3,15 +3,13 @@
 <table class="table table-striped table-hover">
   <tr>
     <th>Name</th>
-    <th colspan="3">Actions</th>
+    <th>Actions</th>
   </tr>
 
 <% @groups.each do |group| %>
   <tr>
     <td><%= link_to group.name , group %>
-    <td><%= link_to 'Show', group %></td>
-    <td><%= link_to 'Edit', edit_group_path(group) %></td>
-    <td><%= link_to 'Destroy', group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+    <td><%= link_to 'Edit', edit_group_path(group) %> - <%= link_to 'Destroy', group, method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>
 <% end %>
 </table>
