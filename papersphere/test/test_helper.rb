@@ -14,3 +14,11 @@ class ActiveSupport::TestCase
 
   # Add more helper methods to be used by all tests here...
 end
+
+class ActionController::TestCase
+  
+  def login(user)
+    sign_in user
+  end
+  
+end
