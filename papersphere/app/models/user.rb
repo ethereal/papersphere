@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
 
   # Setup accessible (or protected) attributes for your model
   attr_accessible :email, :password, :password_confirmation, :remember_me,
-                  :provider, :uid, :name
+                  :provider, :uid, :name, :first_name, :last_name
                   
   def self.find_for_google_oauth2(access_token, signed_in_resource=nil)
     data = access_token.info
@@ -23,6 +23,16 @@ class User < ActiveRecord::Base
   		                ) unless user
 
     user
+  end
+  
+  def name
+    "#{first_name} #{last_name}"
+  end
+  
+  def name=(name)
+    words = name.split(" ")
+    self.first_name = words[0]
+    self.last_name = words[1]
   end
   
 end
