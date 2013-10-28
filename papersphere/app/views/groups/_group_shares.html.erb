@@ -5,7 +5,7 @@
 	<tr>	
     <% @group.reading_list_shares.each do |share| %>
         <tr>
-            <td><%= link_to share.reading_list.name , share.reading_list %>
+            <td><%= link_to share.reading_list.name , share.reading_list %></td>
             <td><%= share.access_rights %></td>
        </tr>
     <% end %>
