@@ -11,6 +11,7 @@
 
 <% @group_members.each do |group_member| %>
   <tr>
+    <td><%= link_to group_member.user_id , group_member %>
     <td><%= group_member.group_id %></td>
     <td><%= group_member.user_id %></td>
     <td><%= link_to 'Show', group_member %></td>

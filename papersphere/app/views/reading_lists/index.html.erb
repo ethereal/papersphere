@@ -9,8 +9,8 @@
 
 <% @reading_lists.each do |reading_list| %>
   <tr>
-    <td><%= reading_list.name %></td>
-      <td><%= reading_list.reading_list_papers.count %></td>
+    <td><%= link_to reading_list.name , reading_list %>
+    <td><%= reading_list.reading_list_papers.count %></td>
     <td><%= link_to 'Show', reading_list %> - <%= link_to 'Edit', edit_reading_list_path(reading_list) %> - <%= link_to 'Destroy', reading_list, method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>
 <% end %>
