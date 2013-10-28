@@ -1,12 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <b>Name:</b>
-  <%= @reading_list.name %>
-  (<%= @reading_list.user.email %>)
-</p>
-
-<h3>Papers</h3>
+<h4><%= @reading_list.name %></h4>
 <div id="paper-listing">
     <%= render :partial => 'paper_list' %>
 </div>

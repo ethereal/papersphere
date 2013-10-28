@@ -18,6 +18,7 @@
 /* Bootstrap Overrides */
 .navbar {
     background-color: black;
+    height: 30px;
 }
 
 .navbar-default .navbar-brand {
@@ -37,4 +38,12 @@
 
 .form-control {
     width: auto;
+}
+
+body {
+    padding-top: 50px;
+}
+
+.pagination a {
+    color: #67aaff;
 }
