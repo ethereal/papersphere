@@ -15,7 +15,7 @@
   <%= csrf_meta_tags %>
 </head>
 <body>
-  
+
   <nav class="navbar navbar-default" role="navigation">
     
     <div class="navbar-header">
@@ -25,7 +25,12 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/">PaperSphere</a>
+    </div>
+    <div class="navbar-header">
+      <img width="120" haight="120" src="/logo.png" alt="PaperSphere" /> 
+    </div>
+    <div class="navbar-header">
+       <a class="navbar-brand" href="/"><h1>PaperSphere</h1></a>
     </div>
     
     <div class="collapse navbar-collapse navbar-ex1-collapse">
@@ -35,10 +40,12 @@
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown"><%= current_user.email %><b class="caret"></b></a>
           <ul class="dropdown-menu">
+            <li><a href="/reading_lists">My lists</a></li>
+            <li><a href="/groups">My groups</a></li>
+            <li><a href="/papers">My papers</a></li>
             <li><%= form_tag '/users/sign_out', method: :delete, "role" => "form" do %>
               <%= submit_tag 'Log Out', "class" => "btn btn-primary" %>
             <% end %></li>
-            <li><a href="#">Another action</a></li>
           </ul>
         </li>
       </ul>
