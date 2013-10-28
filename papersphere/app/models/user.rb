@@ -29,10 +29,10 @@ class User < ActiveRecord::Base
     "#{first_name} #{last_name}"
   end
   
-  def name=(name)
-    words = name.split(" ")
+  def name=(input_name)
+    words = input_name.split(" ")
     self.first_name = words[0]
-    self.last_name = words[1]
+    self.last_name = words.try :[], 1
   end
   
 end
