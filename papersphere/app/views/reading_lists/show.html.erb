@@ -16,5 +16,10 @@
 <br/>
 <div id="update-container"></div>
 
+<h3>Shared with</h3>
+<div id="share-listing">
+    <%= render :partial => 'reading_list_shares' %>
+</div>
+
 <%= link_to 'Edit', edit_reading_list_path(@reading_list) %> |
 <%= link_to 'Back', reading_lists_path %>

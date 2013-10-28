@@ -72,3 +72,13 @@ member6 = GroupMember.create
 member6.group = group2
 member6.user = user3
 member6.save
+
+share1 = ReadingListShare.create(:access_rights => 'readonly')
+share1.group = group1
+share1.reading_list = list
+share1.save
+
+share2 = ReadingListShare.create(:access_rights => 'readwrite')
+share2.group = group2
+share2.reading_list = list
+share2.save
