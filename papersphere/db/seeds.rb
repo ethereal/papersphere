@@ -8,9 +8,9 @@
 
 user = User.create(:email => 'chris@test.com', :password => 'test1234', :password_confirmation => 'test1234', :name => 'Chris Horuk')
 
-user1 = User.create(:email => 'hiranya@test.com', :password => 'test1234', :password_confirmation => 'test1234', :name => 'Hiranya')
-user2 = User.create(:email => 'alex@test.com', :password => 'test1234', :password_confirmation => 'test1234', :name => 'Alex')
-user3 = User.create(:email => 'nevena@test.com', :password => 'test1234', :password_confirmation => 'test1234', :name => 'Nevena')
+user1 = User.create(:email => 'hiranya@test.com', :password => 'test1234', :password_confirmation => 'test1234', :name => 'Hiranya Jayathilaka')
+user2 = User.create(:email => 'alex@test.com', :password => 'test1234', :password_confirmation => 'test1234', :name => 'Alex Pucher')
+user3 = User.create(:email => 'nevena@test.com', :password => 'test1234', :password_confirmation => 'test1234', :name => 'Nevena Golubovic')
 
 paper1 = Paper.create(:title => 'Test Paper 1', :author => 'Author 1', :year => 2011, :publication => 'Publication 1', :url => 'http://foo1.com')
 paper2 = Paper.create(:title => 'Test Paper 2', :author => 'Author 2', :year => 2012, :publication => 'Publication 2', :url => 'http://foo2.com')
