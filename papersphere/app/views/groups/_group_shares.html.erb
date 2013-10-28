@@ -1,11 +1,11 @@
 <table border="1">
 	<tr>
-	    <td>Group</td>
+	    <td>Reading List</td>
 	    <td>Access Rights</td>
 	<tr>	
-    <% @reading_list.reading_list_shares.each do |share| %>
+    <% @group.reading_list_shares.each do |share| %>
         <tr>
-            <td><%= link_to share.group.name , share.group %>
+            <td><%= link_to share.reading_list.name , share.reading_list %>
             <td><%= share.access_rights %></td>
        </tr>
     <% end %>

@@ -24,7 +24,10 @@
     </div>
 <% end %>
 
-
+<h3>Shared Reading Lists<h3>
+<div id="share-listing">
+    <%= render :partial => 'group_shares' %>
+</div>
 
 <%= link_to 'Edit', edit_group_path(@group) %> |
 <%= link_to 'Back', groups_path %>
