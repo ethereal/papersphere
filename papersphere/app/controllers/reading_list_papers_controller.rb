@@ -48,25 +48,24 @@ class ReadingListPapersController < ApplicationController
     paper.url = params[:paper_url]
     paper.paper_code = params[:paper_code]
 
-    error = nil
+    @reading_list_paper = nil
     begin
-      reading_list = ReadingList.find(params[:reading_list_id])
-      @reading_list_paper = ReadingListPaper.add_paper_to_reading_list(reading_list, paper)
+      @reading_list = ReadingList.find(params[:reading_list_id])
+      @reading_list_paper = ReadingListPaper.new
+      if @reading_list_paper.add_paper_to_reading_list(paper, @reading_list)
+        @reading_list.reload
+        @paper_mgt_notification = "Paper titled '#{paper.title}' was added to the list '#{@reading_list.name}' successfully."
+      else
+        @paper_mgt_notification = "Paper '#{paper.title}' already exists in the list."
+      end
+    rescue ActiveRecord::RecordNotFound => ex
+      @paper_mgt_notification = "Invalid reading list ID: #{params[:reading_list_id]}"
     rescue Exception => ex
-      error = ex
+      @paper_mgt_notification = "Error while adding paper to reading list: #{ex.message}"
     end
 
     respond_to do |format|
-      if error.nil?
-        @reading_list = @reading_list_paper.reading_list
-        @paper_mgt_notification = "Paper titled '#{paper.title}' was added to the list '#{@reading_list.name}' successfully."
-        format.html { redirect_to @reading_list_paper, :notice => @paper_mgt_notification }
-        format.js
-        format.json { render :json => @reading_list_paper, :status => :created, :location => @reading_list_paper }
-      else
-        format.html { render :action => 'new' }
-        format.json { render :json => { :error => error.message }, :status => :unprocessable_entity }
-      end
+      format.js
     end
   end
 
