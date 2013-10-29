@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131028223735) do
+ActiveRecord::Schema.define(:version => 20131029021135) do
 
   create_table "group_members", :force => true do |t|
     t.integer  "group_id"
@@ -35,7 +35,10 @@ ActiveRecord::Schema.define(:version => 20131028223735) do
     t.string   "url"
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
+    t.string   "paper_code"
   end
+
+  add_index "papers", ["paper_code"], :name => "index_papers_on_paper_code", :unique => true
 
   create_table "reading_list_papers", :force => true do |t|
     t.integer  "reading_list_id"

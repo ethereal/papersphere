@@ -73,7 +73,8 @@ module RemoteLibraryHelper
         end
 
         href = title['href'].strip
-        entry_id = "ACM_#{href[href.index('?') + 1 .. -1]}"
+        query_params = CGI.parse(href[href.index('?') + 1 .. -1])
+        entry_id = "ACM_#{query_params['id'].first}"
         url = "http://dl.acm.org/#{href}"
         results.add_entry entry_id,
                           title.text.strip,

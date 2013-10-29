@@ -12,9 +12,15 @@ user1 = User.create(:email => 'hiranya@test.com', :password => 'test1234', :pass
 user2 = User.create(:email => 'alex@test.com', :password => 'test1234', :password_confirmation => 'test1234', :name => 'Alex Pucher')
 user3 = User.create(:email => 'nevena@test.com', :password => 'test1234', :password_confirmation => 'test1234', :name => 'Nevena Golubovic')
 
-paper1 = Paper.create(:title => 'Test Paper 1', :author => 'Author 1', :year => 2011, :publication => 'Publication 1', :url => 'http://foo1.com')
-paper2 = Paper.create(:title => 'Test Paper 2', :author => 'Author 2', :year => 2012, :publication => 'Publication 2', :url => 'http://foo2.com')
-paper3 = Paper.create(:title => 'Test Paper 3', :author => 'Author 3', :year => 2013, :publication => 'Publication 3', :url => 'http://foo3.com')
+paper1 = Paper.create(:title => 'Test Paper 1', :author => 'Author 1',
+                      :year => 2011, :publication => 'Publication 1',
+                      :url => 'http://foo1.com', :paper_code => 'TEST_001')
+paper2 = Paper.create(:title => 'Test Paper 2', :author => 'Author 2',
+                      :year => 2012, :publication => 'Publication 2',
+                      :url => 'http://foo2.com', :paper_code => 'TEST_002')
+paper3 = Paper.create(:title => 'Test Paper 3', :author => 'Author 3',
+                      :year => 2013, :publication => 'Publication 3',
+                      :url => 'http://foo3.com', :paper_code => 'TEST_003')
 
 list = ReadingList.create(:name => 'Distributed Systems')
 list.user = user

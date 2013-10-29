@@ -6,7 +6,8 @@ class PaperTest < ActiveSupport::TestCase
     paper = Paper.new :title => 'title',
                       :author => 'author',
                       :publication => 'publication',
-                      :year => 2013
+                      :year => 2013,
+                      :paper_code => 'TEST_200'
     assert paper.valid?
   end
 

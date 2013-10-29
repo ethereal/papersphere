@@ -20,7 +20,9 @@ class PapersControllerTest < ActionController::TestCase
 
   test "should create paper" do
     assert_difference('Paper.count') do
-      post :create, paper: { author: @paper.author, publication: @paper.publication, title: @paper.title, url: @paper.url, year: @paper.year }
+      post :create, paper: { author: @paper.author, publication: @paper.publication,
+          title: @paper.title, url: @paper.url,
+          year: @paper.year, paper_code: 'TEST_150' }
     end
 
     assert_redirected_to paper_path(assigns(:paper))

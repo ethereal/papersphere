@@ -18,7 +18,7 @@
                         <%= hidden_field_tag :paper_publication, entry.publication %>
                         <%= hidden_field_tag :paper_year, entry.year %>
                         <%= hidden_field_tag :paper_url, entry.url %>
-                        <%= hidden_field_tag :paper_unique_id, entry.entry_id %>
+                        <%= hidden_field_tag :paper_code, entry.entry_id %>
                         <%= submit_tag 'Add', :disable_with => 'Please wait...', :class => 'submit' %>
                     <% end %>
                 </td>

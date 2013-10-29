@@ -27,6 +27,7 @@ class ReadingListPapersControllerTest < ActionController::TestCase
           :paper_year => 2013,
           :paper_publication => 'Publication',
           :paper_url => 'URL',
+          :paper_code => 'TEST_300',
           :reading_list_id => @reading_list_paper.reading_list_id
       }
     end

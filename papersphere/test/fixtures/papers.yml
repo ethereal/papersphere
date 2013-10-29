@@ -6,6 +6,7 @@ one:
   year: 1
   publication: MyString
   url: MyString
+  paper_code: TEST_100
 
 two:
   title: MyString
@@ -13,3 +14,4 @@ two:
   year: 1
   publication: MyString
   url: MyString
+  paper_code: TEST_101

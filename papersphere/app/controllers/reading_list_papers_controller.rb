@@ -46,6 +46,7 @@ class ReadingListPapersController < ApplicationController
     paper.publication = params[:paper_publication]
     paper.year = params[:paper_year]
     paper.url = params[:paper_url]
+    paper.paper_code = params[:paper_code]
 
     paper.save
     @reading_list_paper = ReadingListPaper.new
