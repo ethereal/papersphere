@@ -5,6 +5,10 @@ module RemoteLibraryHelper
 
   RESULTS_PER_PAGE = 20
 
+  def self.purify(str)
+    str.strip.encode('UTF-8', 'binary', :invalid => :replace, :undef => :replace, :replace => '')
+  end
+
   class ResultEntry
     attr_accessor :entry_id, :title, :author, :publication, :year, :url
 
@@ -107,14 +111,14 @@ module RemoteLibraryHelper
       results = SearchResults.new(total, pos)
 
       elements.each do |element|
-        entry_id = element.xpath('punumber').first.text.strip
-        title = element.xpath('title').first.text.strip
-        authors = element.xpath('authors').first.text.strip
+        entry_id = element.xpath('arnumber').first.text.strip
+        title = RemoteLibraryHelper::purify(element.xpath('title').first.text)
+        authors = RemoteLibraryHelper::purify(element.xpath('authors').first.text)
         authors_list = authors.split(';')
         if authors_list.count > 1
           authors = authors_list[0].strip + ' et al'
         end
-        publication = element.xpath('pubtitle').first.text.strip
+        publication = RemoteLibraryHelper::purify(element.xpath('pubtitle').first.text)
         year = element.xpath('py').first.text.strip.to_i
         url = element.xpath('mdurl').first.text.strip
         results.add_entry "IEEE_#{entry_id}",
