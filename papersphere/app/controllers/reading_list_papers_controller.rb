@@ -40,33 +40,28 @@ class ReadingListPapersController < ApplicationController
   # POST /reading_list_papers
   # POST /reading_list_papers.json
   def create
-    paper = Paper.find_by_paper_code(params[:paper_code])
-    if paper.nil?
-      paper = Paper.new
-      paper.title = params[:paper_title]
-      paper.author = params[:paper_authors]
-      paper.publication = params[:paper_publication]
-      paper.year = params[:paper_year]
-      paper.url = params[:paper_url]
-      paper.paper_code = params[:paper_code]
+    paper = Paper.new
+    paper.title = params[:paper_title]
+    paper.author = params[:paper_authors]
+    paper.publication = params[:paper_publication]
+    paper.year = params[:paper_year]
+    paper.url = params[:paper_url]
+    paper.paper_code = params[:paper_code]
 
-      paper.save
-    end
-
-    @reading_list_paper = ReadingListPaper.new
-    @reading_list_paper.paper = paper
-    @reading_list = ReadingList.find(params[:reading_list_id])
-    @reading_list_paper.reading_list = @reading_list
-
-    respond_to do |format|
-      if @reading_list_paper.save
-        @paper_mgt_notification = "Paper titled '#{paper.title}' was added to the list '#{@reading_list.name}' successfully"
-        format.html { redirect_to @reading_list_paper, notice: 'Reading list paper was successfully created.' }
+    reading_list_id = params[:reading_list_id]
+    begin
+      @reading_list_paper = ReadingListPaper.add_paper_to_reading_list(reading_list_id, paper)
+      @reading_list = @reading_list_paper.reading_list
+      @paper_mgt_notification = "Paper titled '#{paper.title}' was added to the list '#{@reading_list.name}' successfully."
+      respond_to do |format|
+        format.html { redirect_to @reading_list_paper, :notice => @paper_mgt_notification }
         format.js
-        format.json { render json: @reading_list_paper, status: :created, location: @reading_list_paper }
-      else
-        format.html { render action: "new" }
-        format.json { render json: @reading_list_paper.errors, status: :unprocessable_entity }
+        format.json { render :json => @reading_list_paper, :status => :created, :location => @reading_list_paper }
+      end
+    rescue Exception => ex
+      respond_to do |format|
+        format.html { render :action => 'new' }
+        format.json { render :json => { :error => ex.message }, :status => :unprocessable_entity }
       end
     end
   end
