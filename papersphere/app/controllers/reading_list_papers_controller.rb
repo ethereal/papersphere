@@ -49,19 +49,23 @@ class ReadingListPapersController < ApplicationController
     paper.paper_code = params[:paper_code]
 
     reading_list_id = params[:reading_list_id]
+    error = nil
     begin
       @reading_list_paper = ReadingListPaper.add_paper_to_reading_list(reading_list_id, paper)
-      @reading_list = @reading_list_paper.reading_list
-      @paper_mgt_notification = "Paper titled '#{paper.title}' was added to the list '#{@reading_list.name}' successfully."
-      respond_to do |format|
+    rescue Exception => ex
+      error = ex
+    end
+
+    respond_to do |format|
+      if error.nil?
+        @reading_list = @reading_list_paper.reading_list
+        @paper_mgt_notification = "Paper titled '#{paper.title}' was added to the list '#{@reading_list.name}' successfully."
         format.html { redirect_to @reading_list_paper, :notice => @paper_mgt_notification }
         format.js
         format.json { render :json => @reading_list_paper, :status => :created, :location => @reading_list_paper }
-      end
-    rescue Exception => ex
-      respond_to do |format|
+      else
         format.html { render :action => 'new' }
-        format.json { render :json => { :error => ex.message }, :status => :unprocessable_entity }
+        format.json { render :json => { :error => error.message }, :status => :unprocessable_entity }
       end
     end
   end
