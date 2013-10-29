@@ -3,11 +3,8 @@ class ReadingListPaper < ActiveRecord::Base
   belongs_to :paper
   attr_accessible :paper_id, :reading_list_id
 
-  def self.add_paper_to_reading_list(reading_list_id, paper)
+  def self.add_paper_to_reading_list(reading_list, paper)
     transaction do
-      reading_list = ReadingList.find(reading_list_id)
-      raise ActiveRecord::RecordNotFound if reading_list.nil?
-
       existing_paper = Paper.find_by_paper_code(paper.paper_code)
       if existing_paper.nil?
         paper.save!

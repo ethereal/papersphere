@@ -48,10 +48,10 @@ class ReadingListPapersController < ApplicationController
     paper.url = params[:paper_url]
     paper.paper_code = params[:paper_code]
 
-    reading_list_id = params[:reading_list_id]
     error = nil
     begin
-      @reading_list_paper = ReadingListPaper.add_paper_to_reading_list(reading_list_id, paper)
+      reading_list = ReadingList.find(params[:reading_list_id])
+      @reading_list_paper = ReadingListPaper.add_paper_to_reading_list(reading_list, paper)
     rescue Exception => ex
       error = ex
     end
