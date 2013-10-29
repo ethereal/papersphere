@@ -65,11 +65,16 @@ module RemoteLibraryHelper
       titles.each do |title|
         author_names = authors[index].css('a')
         if author_names.size > 1
-          author_name = author_names[0].text.strip + ' et al'
+          author_name = author_names.first.text.strip + ' et al'
         elsif author_names.size == 1
-          author_name = author_names[0].text.strip
+          author_name = author_names.first.text.strip
         else
-          author_name = authors[index].text.strip
+          author_names = authors[index].text.strip.split(', ')
+          if author_names.size > 1
+            author_name = author_names.first + ' et al'
+          else
+            author_name = author_names.first
+          end
         end
 
         href = title['href'].strip

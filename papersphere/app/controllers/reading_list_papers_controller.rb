@@ -40,15 +40,19 @@ class ReadingListPapersController < ApplicationController
   # POST /reading_list_papers
   # POST /reading_list_papers.json
   def create
-    paper = Paper.new
-    paper.title = params[:paper_title]
-    paper.author = params[:paper_authors]
-    paper.publication = params[:paper_publication]
-    paper.year = params[:paper_year]
-    paper.url = params[:paper_url]
-    paper.paper_code = params[:paper_code]
+    paper = Paper.find_by_paper_code(params[:paper_code])
+    if paper.nil?
+      paper = Paper.new
+      paper.title = params[:paper_title]
+      paper.author = params[:paper_authors]
+      paper.publication = params[:paper_publication]
+      paper.year = params[:paper_year]
+      paper.url = params[:paper_url]
+      paper.paper_code = params[:paper_code]
 
-    paper.save
+      paper.save
+    end
+
     @reading_list_paper = ReadingListPaper.new
     @reading_list_paper.paper = paper
     @reading_list = ReadingList.find(params[:reading_list_id])
@@ -56,6 +60,7 @@ class ReadingListPapersController < ApplicationController
 
     respond_to do |format|
       if @reading_list_paper.save
+        @paper_mgt_notification = "Paper titled '#{paper.title}' was added to the list '#{@reading_list.name}' successfully"
         format.html { redirect_to @reading_list_paper, notice: 'Reading list paper was successfully created.' }
         format.js
         format.json { render json: @reading_list_paper, status: :created, location: @reading_list_paper }
