@@ -49,10 +49,12 @@ class ReadingListPapersController < ApplicationController
     paper.paper_code = params[:paper_code]
 
     @reading_list_paper = ReadingListPaper.new
+    @success = false
     begin
       result = @reading_list_paper.add_paper_to_reading_list(paper, params[:reading_list_id])
       if result == ReadingListPaper::TXN_SUCCESSFUL
         @paper_mgt_notification = "Paper titled '#{paper.title}' was added to the list successfully."
+        @success = true
       elsif result == ReadingListPaper::TXN_INVALID_READING_LIST
         @paper_mgt_notification = "Invalid reading list ID: #{params[:reading_list_id]}"
       elsif result == ReadingListPaper::TXN_PAPER_ALREADY_IN_READING_LIST
