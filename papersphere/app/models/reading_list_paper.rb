@@ -3,11 +3,25 @@ class ReadingListPaper < ActiveRecord::Base
   belongs_to :paper
   attr_accessible :paper_id, :reading_list_id
 
-  def add_paper_to_reading_list(paper, reading_list)
-    return_status = false
+  TXN_INCOMPLETE = :rlp_txn_incomplete
+  TXN_INVALID_READING_LIST = :rlp_txn_invalid_reading_list
+  TXN_PAPER_ALREADY_IN_READING_LIST = :rlp_txn_paper_in_list
+  TXN_SUCCESSFUL = :rlp_txn_success
+
+  def add_paper_to_reading_list(paper, reading_list_id)
+    status = TXN_INCOMPLETE
     transaction do
+      reading_list = nil
+      begin
+        reading_list = ReadingList.find(reading_list_id)
+      rescue ActiveRecord::RecordNotFound
+        status = TXN_INVALID_READING_LIST
+        raise ActiveRecord::Rollback
+      end
+
       reading_list.papers.each do |p|
         if p.paper_code == paper.paper_code
+          status = TXN_PAPER_ALREADY_IN_READING_LIST
           raise ActiveRecord::Rollback
         end
       end
@@ -22,9 +36,10 @@ class ReadingListPaper < ActiveRecord::Base
       self.paper = paper
       self.reading_list = reading_list
       self.save!
-      return_status = true
+      status = TXN_SUCCESSFUL
     end
-    return_status
+
+    status
   end
 
 end

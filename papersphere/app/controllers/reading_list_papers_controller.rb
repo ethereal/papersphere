@@ -48,21 +48,23 @@ class ReadingListPapersController < ApplicationController
     paper.url = params[:paper_url]
     paper.paper_code = params[:paper_code]
 
-    @reading_list_paper = nil
+    @reading_list_paper = ReadingListPaper.new
     begin
-      @reading_list = ReadingList.find(params[:reading_list_id])
-      @reading_list_paper = ReadingListPaper.new
-      if @reading_list_paper.add_paper_to_reading_list(paper, @reading_list)
-        @reading_list.reload
-        @paper_mgt_notification = "Paper titled '#{paper.title}' was added to the list '#{@reading_list.name}' successfully."
-      else
+      result = @reading_list_paper.add_paper_to_reading_list(paper, params[:reading_list_id])
+      if result == ReadingListPaper::TXN_SUCCESSFUL
+        @paper_mgt_notification = "Paper titled '#{paper.title}' was added to the list successfully."
+      elsif result == ReadingListPaper::TXN_INVALID_READING_LIST
+        @paper_mgt_notification = "Invalid reading list ID: #{params[:reading_list_id]}"
+      elsif result == ReadingListPaper::TXN_PAPER_ALREADY_IN_READING_LIST
         @paper_mgt_notification = "Paper '#{paper.title}' already exists in the list."
+      else
+        @paper_mgt_notification = "Unexpected error while adding paper '#{paper.title}' to the list"
       end
-    rescue ActiveRecord::RecordNotFound => ex
-      @paper_mgt_notification = "Invalid reading list ID: #{params[:reading_list_id]}"
     rescue Exception => ex
       @paper_mgt_notification = "Error while adding paper to reading list: #{ex.message}"
     end
+
+    @reading_list = ReadingList.find(params[:reading_list_id])
 
     respond_to do |format|
       format.js
