@@ -3,7 +3,7 @@
         <%= form_tag({:controller => 'reading_list_papers', :action=> 'remove_paper_from_list'}, :remote => true, :method => :delete) do %>
             <%= hidden_field_tag :reading_list_id, reading_list_id %>
             <%= hidden_field_tag :paper_id, paper.id %>
-            <%= submit_tag 'Remove', :disable_with => 'Please wait...', :class => 'submit', :data => { :confirm => 'Are you sure?' } %>
+            <%= submit_tag 'Remove', :disable_with => 'Please wait...', :class => 'btn btn-danger btn-sm', :data => { :confirm => 'Are you sure?' } %>
         <% end %>
     </td>
     <td><%= paper.title %></td>

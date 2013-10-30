@@ -1,2 +1,9 @@
 $('#paper-listing').html("<%=j render :partial => 'reading_lists/paper_list', :content_type => 'text/html' %>")
 $('#notice').html("<%= @paper_mgt_notification %>")
+
+<% if @success %>
+buttonDiv = document.getElementById('btn_div_<%= @reading_list_paper.paper.paper_code %>');
+if (buttonDiv != null) {
+    buttonDiv.innerHTML = '<%= submit_tag 'Add', :class => 'btn btn-primary btn-sm' %>'
+}
+<% end %>

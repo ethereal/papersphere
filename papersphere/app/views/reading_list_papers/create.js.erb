@@ -2,5 +2,5 @@ $('#paper-listing').html("<%=j render :partial => 'reading_lists/paper_list', :c
 $('#notice').html("<%= @paper_mgt_notification %>")
 
 <% if @success %>
-document.getElementById('btn_div_<%= @reading_list_paper.paper.paper_code %>').innerHTML = '<%= submit_tag 'Add', :class => 'submit', :disabled => true %>'
+document.getElementById('btn_div_<%= @reading_list_paper.paper.paper_code %>').innerHTML = '<%= submit_tag 'Add', :class => 'btn btn-primary btn-sm', :disabled => true %>'
 <% end %>

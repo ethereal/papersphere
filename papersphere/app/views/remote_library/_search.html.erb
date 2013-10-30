@@ -20,7 +20,7 @@
                         <%= hidden_field_tag :paper_url, entry.url %>
                         <%= hidden_field_tag :paper_code, entry.entry_id %>
                         <div id="btn_div_<%= entry.entry_id %>">
-                            <%= submit_tag 'Add', :disable_with => 'Please wait...', :class => 'submit', :disabled => @reading_list.has_paper(entry.entry_id) %>
+                            <%= submit_tag 'Add', :disable_with => 'Please wait...', :class => 'btn btn-primary btn-sm', :disabled => @reading_list.has_paper(entry.entry_id) %>
                         </div>
                     <% end %>
                 </td>

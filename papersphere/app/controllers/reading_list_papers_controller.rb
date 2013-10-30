@@ -108,9 +108,11 @@ class ReadingListPapersController < ApplicationController
         first
 
     @paper_mgt_notification = ''
+    @success = false
     if !@reading_list_paper.nil?
       title = @reading_list_paper.paper.title
       @reading_list_paper.destroy
+      @success = true
       @paper_mgt_notification = "Successfully removed the paper '#{title}' from the list."
     else
       @paper_mgt_notification = 'Failed to locate the specified paper in the database.'
