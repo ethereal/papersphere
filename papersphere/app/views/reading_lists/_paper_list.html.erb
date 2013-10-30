@@ -1,10 +1,14 @@
-<table class="table table-striped table-hover">
-    <tr>
-        <th>Title</th>
-        <th>Authors</th>
-        <th>Year</th>
-        <th>Publication</th>
-        <th></th>
-    </tr>
-    <%= render @reading_list.papers %>
-</table>
+<% if @reading_list.papers.empty? %>
+    <p>No papers have been added to this list yet.</p>
+<% else %>
+    <table class="table table-striped table-hover">
+        <tr>
+            <th>Title</th>
+            <th>Authors</th>
+            <th>Year</th>
+            <th>Publication</th>
+            <th></th>
+        </tr>
+        <%= render @reading_list.papers %>
+    </table>
+<% end %>

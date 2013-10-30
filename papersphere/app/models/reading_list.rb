@@ -16,4 +16,14 @@ class ReadingList < ActiveRecord::Base
     }
     false
   end
+
+  def has_paper(paper_code)
+    self.papers.each do |p|
+      if p.paper_code == paper_code
+        return true
+      end
+    end
+    false
+  end
+
 end

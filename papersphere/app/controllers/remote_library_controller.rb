@@ -13,6 +13,7 @@ class RemoteLibraryController < ApplicationController
     end
 
     @results = helper.search(params[:query], page)
+    @reading_list = ReadingList.find(params[:reading_list_id])
     respond_to do |format|
       format.js
     end
