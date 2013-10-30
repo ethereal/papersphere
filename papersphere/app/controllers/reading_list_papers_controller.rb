@@ -100,4 +100,25 @@ class ReadingListPapersController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  def remove_paper_from_list
+    @reading_list_paper = ReadingListPaper.
+        where(:reading_list_id => params[:reading_list_id]).
+        where(:paper_id => params[:paper_id]).
+        first
+
+    @paper_mgt_notification = ''
+    if !@reading_list_paper.nil?
+      title = @reading_list_paper.paper.title
+      @reading_list_paper.destroy
+      @paper_mgt_notification = "Successfully removed the paper '#{title}' from the list."
+    else
+      @paper_mgt_notification = 'Failed to locate the specified paper in the database.'
+    end
+
+    @reading_list = ReadingList.find(params[:reading_list_id])
+    respond_to do |format|
+      format.js
+    end
+  end
 end

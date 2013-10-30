@@ -3,12 +3,13 @@
 <% else %>
     <table class="table table-striped table-hover">
         <tr>
+            <th></th>
             <th>Title</th>
             <th>Authors</th>
             <th>Year</th>
             <th>Publication</th>
             <th></th>
         </tr>
-        <%= render @reading_list.papers %>
+        <%= render @reading_list.papers, :reading_list_id => @reading_list.id %>
     </table>
 <% end %>
