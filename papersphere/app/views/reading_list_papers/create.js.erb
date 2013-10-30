@@ -1,2 +1,4 @@
 $('#paper-listing').html("<%=j render :partial => 'reading_lists/paper_list', :content_type => 'text/html' %>")
 $('#notice').html("<%= @paper_mgt_notification %>")
+
+document.getElementById('btn_div_<%= @reading_list_paper.paper.paper_code %>').innerHTML = '<button disabled="true">Add</button>'
