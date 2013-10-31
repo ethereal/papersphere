@@ -11,37 +11,32 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-5">
+    <div class="col-md-4">
         <div class="panel panel-primary">
             <div class="panel-heading">Search for Papers</div>
             <div class="panel-body">
-                <%= form_tag({:action => 'search', :controller => 'remote_library'}, :remote => true, :class => 'form-inline' , :'data-update-target' => 'update-container') do %>
-                    <div class="form-group">
-                        <label for="query">Search</label>
-                        <%= text_field_tag 'query', nil, :class => 'form-control', :placeholder => 'Keywords'  %>
+                <%= form_tag({:action => 'search', :controller => 'remote_library'}, :remote => true, :class => 'form' , :'data-update-target' => 'update-container', :id => 'search_form') do %>
+                    <label for="query">Search</label>
+                    <div class="form-inline">
+                        <div class="form-group">
+                            <%= text_field_tag 'query', nil, :class => 'form-control', :placeholder => 'Keywords'  %>
+                        </div>
+                        <div class="form-group">
+                            <label class="radio">
+                                <%= radio_button_tag 'db', 'acm', true %> ACM
+                            </label>
+                            <label class="radio">
+                                <%= radio_button_tag 'db', 'ieee' %> IEEE
+                            </label>
+                        </div>
+                        <%= submit_tag 'Go', :disable_with => 'Searching...', :class => 'btn btn-primary', :onclick => 'submit_search_form()' %>
                     </div>
-                    <div class="form-group">
-                        <label class="radio">
-                            <%= radio_button_tag 'db', 'acm', true %> ACM
-                        </label>
-                        <label class="radio">
-                            <%= radio_button_tag 'db', 'ieee' %> IEEE
-                        </label>
-                    </div>
-                    <%= submit_tag 'Search', :disable_with => 'Please wait...', :class => 'btn btn-primary' %>
                     <%= hidden_field_tag 'reading_list_id', @reading_list.id %>
                 <% end %>
             </div>
         </div>
     </div>
-    <div class="col-md-5">
-        <div class="panel panel-primary">
-            <div class="panel-heading">Rename Reading List</div>
-            <div class="panel-body">
-                <%= render 'form' %>
-            </div>
-        </div>
-    </div>
+    <%= render 'form' %>
 </div>
 <div class="row">
     <div class="col-md-12">

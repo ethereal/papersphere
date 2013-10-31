@@ -76,7 +76,7 @@ class ReadingListsController < ApplicationController
     new_list_name = params[:reading_list][:name]
     list_name_exists = false
     current_user.reading_lists.each do |rl|
-      if rl.name == new_list_name
+      if rl.name == new_list_name and @reading_list.name != new_list_name
         list_name_exists = true
       end
     end
