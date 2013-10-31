@@ -12,8 +12,12 @@ class RemoteLibraryController < ApplicationController
       helper = RemoteLibraryHelper::ACMHelper.new
     end
 
-    @results = helper.search(params[:query], page)
-    @reading_list = ReadingList.find(params[:reading_list_id])
+    if params[:query] != ''
+      @results = helper.search(params[:query], page)
+      @reading_list = ReadingList.find(params[:reading_list_id])
+    else
+      @results = :empty_query
+    end
     respond_to do |format|
       format.js
     end

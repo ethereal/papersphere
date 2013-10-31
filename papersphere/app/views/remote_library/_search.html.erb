@@ -1,4 +1,4 @@
-<% if @results.count > 0 %>
+<% if @results != :empty_query and @results.count > 0 %>
     <div class="panel panel-primary">
         <div class="panel-heading">Search results for "<%= params[:query] %>" from <%= params[:db].upcase %> (Showing <%= @results.pos %> - <%= @results.pos + @results.count - 1 %> of <%= @results.total %> results)</div>
         <div class="panel-body">
@@ -36,6 +36,6 @@
             <%= will_paginate @results.get_paginated_results, :params => {:controller => 'remote_library', :action => 'search', :query => params[:query], :reading_list_id => params[:reading_list_id], :db => params[:db]}, :remote => true %>
         </div>
     </div>
-<% else %>
-    <p>No matching results</p>
+<% elsif @results != :empty_query %>
+    <div class="alert alert-warning">No matching results</div>
 <% end %>

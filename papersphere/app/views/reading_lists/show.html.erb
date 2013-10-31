@@ -1,5 +1,12 @@
 <p id="notice"><%= notice %></p>
 
+<script type="text/javascript">
+    function valform(event) {
+        alert('ok');
+        return false;
+    }
+</script>
+
 <div class="page-header">
     <h1><%= @reading_list.name %></h1>
 </div>
@@ -15,7 +22,7 @@
         <div class="panel panel-primary">
             <div class="panel-heading">Search for Papers</div>
             <div class="panel-body">
-                <%= form_tag({:action => 'search', :controller => 'remote_library'}, :remote => true, :class => 'form' , :'data-update-target' => 'update-container', :id => 'search_form') do %>
+                <%= form_tag({:action => 'search', :controller => 'remote_library'}, :remote => true, :class => 'form' , :'data-update-target' => 'update-container') do %>
                     <label for="query">Search</label>
                     <div class="form-inline">
                         <div class="form-group">
