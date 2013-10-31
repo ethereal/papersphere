@@ -51,11 +51,18 @@
     
   </nav>
   
-  <% if notice.present? %>
-    <p class="alert alert-warning"><%= notice %></p>
-  <% end %>
-  <% if alert.present? %>
-    <p class="alert alert-danger"><%= alert %></p>
+  <div class="alert alert-warning alert-dismissable <%= notice.present? ? '' : 'hidden' %>">
+    <button type="button" class="close" aria-hidden="true">&times;</button>
+    <p class="notice-text"><%= notice %></p>
+  </div>
+  <div class="alert alert-danger alert-dismissable <%= alert.present? ? '' : 'hidden' %>">
+    <button type="button" class="close" aria-hidden="true">&times;</button>
+    <p class="alert-text"><%= alert %></p>
+  </div>
+  <%= javascript_tag do %>
+    $('.alert .close').on('click', function() {
+      $(this).parent().addClass('hidden');
+    });
   <% end %>
   
   <div class="page-content">

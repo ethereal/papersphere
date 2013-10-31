@@ -76,17 +76,16 @@ class ReadingListPapersController < ApplicationController
   end
 
   # PUT /reading_list_papers/1
-  # PUT /reading_list_papers/1.json
   def update
-    @reading_list_paper = ReadingListPaper.find(params[:id])
-
+    @reading_list_paper = ReadingListPaper.includes(:comments).find(params[:id])
+    @reading_list_paper.comments ||= []
+    @reading_list_paper.comments << Comment.new(params[:comment])
+    
     respond_to do |format|
-      if @reading_list_paper.update_attributes(params[:reading_list_paper])
-        format.html { redirect_to @reading_list_paper, notice: 'Reading list paper was successfully updated.' }
-        format.json { head :no_content }
+      if @reading_list_paper.save
+        format.js {}
       else
-        format.html { render action: "edit" }
-        format.json { render json: @reading_list_paper.errors, status: :unprocessable_entity }
+        format.js {}
       end
     end
   end

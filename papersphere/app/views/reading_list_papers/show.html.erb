@@ -17,3 +17,24 @@
 <% end %>
 <br />
 <%= link_to 'Back', @reading_list %>
+
+<%= form_for @reading_list_paper,
+    method: :put,
+    remote: true,
+    :html => { role: "form", :class => "comment-form" } do |f| %>
+  
+  <%= text_area :comment, :text,
+      :class => "form-control comment-input",
+      rows: 3, cols: 120,
+      placeholder: "Enter comment..."  %>
+      
+  <%= f.submit "Post Comment",
+      :class => "btn btn-primary btn-xs post-comment-btn" %>
+      
+<% end %>
+
+<% if @reading_list_paper.comments.present? %>
+  <%= render "comments", comments: @reading_list_paper.comments %>
+<% else %>
+  <h4 id="empty-table-msg">No comments yet. Be the first to post!</h4>
+<% end %>
