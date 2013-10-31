@@ -47,9 +47,19 @@ class ReadingListsController < ApplicationController
     @reading_list = ReadingList.new(params[:reading_list])
     @reading_list.user = current_user
 
+    list_name_exists = false
+    current_user.reading_lists.each do |rl|
+      if rl.name == @reading_list.name
+        list_name_exists = true
+      end
+    end
+
     respond_to do |format|
-      if @reading_list.save
+      if !list_name_exists and @reading_list.save
         format.html { redirect_to @reading_list, notice: 'Reading list was successfully created.' }
+        format.json { render json: @reading_list, status: :created, location: @reading_list }
+      elsif list_name_exists
+        format.html { redirect_to @reading_list, notice: "You already have a list by the name '#{@reading_list.name}'." }
         format.json { render json: @reading_list, status: :created, location: @reading_list }
       else
         format.html { render action: "new" }
@@ -63,9 +73,20 @@ class ReadingListsController < ApplicationController
   def update
     @reading_list = ReadingList.find(params[:id])
 
+    new_list_name = params[:reading_list][:name]
+    list_name_exists = false
+    current_user.reading_lists.each do |rl|
+      if rl.name == new_list_name
+        list_name_exists = true
+      end
+    end
+
     respond_to do |format|
-      if @reading_list.update_attributes(params[:reading_list])
+      if !list_name_exists and @reading_list.update_attributes(params[:reading_list])
         format.html { redirect_to @reading_list, notice: 'Reading list was successfully updated.' }
+        format.json { head :no_content }
+      elsif list_name_exists
+        format.html { redirect_to @reading_list, notice: "You already have a list by the name '#{new_list_name}'." }
         format.json { head :no_content }
       else
         format.html { render action: "edit" }
