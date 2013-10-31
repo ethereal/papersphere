@@ -7,8 +7,10 @@ class RemoteLibraryController < ApplicationController
     end
 
     if params[:db] == 'ieee'
+      @target_db = 'ieee'
       helper = RemoteLibraryHelper::IEEEHelper.new
     else
+      @target_db = 'acm'
       helper = RemoteLibraryHelper::ACMHelper.new
     end
 

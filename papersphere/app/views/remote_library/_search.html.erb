@@ -1,6 +1,6 @@
 <% if @results != :empty_query and @results.count > 0 %>
     <div class="panel panel-primary">
-        <div class="panel-heading">Search results for "<%= params[:query] %>" from <%= params[:db].upcase %> (Showing <%= @results.pos %> - <%= @results.pos + @results.count - 1 %> of <%= @results.total %> results)</div>
+        <div class="panel-heading">Search results for "<%= params[:query] %>" from <%= @target_db.upcase %> (Showing <%= @results.pos %> - <%= @results.pos + @results.count - 1 %> of <%= @results.total %> results)</div>
         <div class="panel-body">
             <table width="100%" cellpadding="2px" cellspacing="2px" class="table table-striped table-hover">
                 <tr>

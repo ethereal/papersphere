@@ -20,7 +20,7 @@ class ReadingListsControllerTest < ActionController::TestCase
 
   test "should create reading_list" do
     assert_difference('ReadingList.count') do
-      post :create, reading_list: { name: @reading_list.name }
+      post :create, reading_list: { name: 'new_reading_list' }
     end
 
     assert_redirected_to reading_list_path(assigns(:reading_list))
