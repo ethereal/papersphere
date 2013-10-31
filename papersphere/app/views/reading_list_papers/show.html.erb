@@ -1,8 +1,19 @@
-<h4><%= @paper.title %></h4>
-<dl class="dl-horizontal reading-list-paper-dl">
-  <dt>Author:</dt><dd><%= @paper.author %></dd>
-  <dt>Year:</dt><dd><%= @paper.year %></dt>
-  <dt>Publication:</dt><dd><%= @paper.publication %></dt>
-</dl>
-
+<div class="panel panel-default reading-list-paper-panel">
+  
+  <div class="panel-heading">
+    <h3 class="panel-title"><%= @paper.title %></h3>
+  </div>
+  
+  <div class="panel-body">
+    <dl class="dl-horizontal reading-list-paper-dl">
+      <dt>Author:</dt><dd><%= @paper.author %></dd>
+      <dt>Year:</dt><dd><%= @paper.year %></dt>
+      <dt>Publication:</dt><dd><%= @paper.publication %></dt>
+    </dl>
+  </div>
+</div>
+<%= link_to @paper.url, :class => "btn btn-primary full-paper-btn" do %>
+  <span class="glyphicon glyphicon-book"></span> Download the full paper
+<% end %>
+<br />
 <%= link_to 'Back', @reading_list %>
