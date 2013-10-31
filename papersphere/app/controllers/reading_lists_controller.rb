@@ -55,15 +55,27 @@ class ReadingListsController < ApplicationController
     end
 
     respond_to do |format|
-      if !list_name_exists and @reading_list.save
-        format.html { redirect_to @reading_list, notice: 'Reading list was successfully created.' }
-        format.json { render json: @reading_list, status: :created, location: @reading_list }
-      elsif list_name_exists
-        format.html { redirect_to @reading_list, notice: "You already have a list by the name '#{@reading_list.name}'." }
-        format.json { render json: @reading_list, status: :created, location: @reading_list }
+      if list_name_exists
+        format.html { redirect_to @reading_list, :notice => "You already have a list by the name '#{@reading_list.name}'." }
+        format.json { render :json => @reading_list, :status => :created, :location => @reading_list }
+      elsif @reading_list.save
+        format.html { redirect_to @reading_list, :notice => 'Reading list was successfully created.' }
+        format.json { render :json => @reading_list, :status => :created, :location => @reading_list }
       else
-        format.html { render action: "new" }
-        format.json { render json: @reading_list.errors, status: :unprocessable_entity }
+        error_msg = 'Unexpected error while creating reading list.'
+        if @reading_list.errors.messages.count > 0
+          error_msg = 'Following error(s) prevented the reading list from being saved: '
+          multiple = false
+          @reading_list.errors.full_messages.each do |msg|
+            if multiple
+              error_msg += ', '
+            end
+            error_msg += msg
+            multiple = true
+          end
+        end
+        format.html { redirect_to reading_lists_path, :action => 'index', :notice => error_msg }
+        format.json { render :json => @reading_list.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -75,22 +87,40 @@ class ReadingListsController < ApplicationController
 
     new_list_name = params[:reading_list][:name]
     list_name_exists = false
-    current_user.reading_lists.each do |rl|
-      if rl.name == new_list_name and @reading_list.name != new_list_name
-        list_name_exists = true
+
+    if new_list_name != @reading_list.name
+      current_user.reading_lists.each do |rl|
+        if rl.name == new_list_name and @reading_list.name != new_list_name
+          list_name_exists = true
+        end
       end
     end
 
     respond_to do |format|
-      if !list_name_exists and @reading_list.update_attributes(params[:reading_list])
-        format.html { redirect_to @reading_list, notice: 'Reading list was successfully updated.' }
+      if list_name_exists
+        format.html { redirect_to @reading_list, :notice => "You already have a list by the name '#{new_list_name}'." }
         format.json { head :no_content }
-      elsif list_name_exists
-        format.html { redirect_to @reading_list, notice: "You already have a list by the name '#{new_list_name}'." }
+      elsif new_list_name == @reading_list.name
+        format.html { redirect_to @reading_list }
+        format.json { head :no_content }
+      elsif @reading_list.update_attributes(params[:reading_list])
+        format.html { redirect_to @reading_list, :notice => 'Reading list was successfully updated.' }
         format.json { head :no_content }
       else
-        format.html { render action: "edit" }
-        format.json { render json: @reading_list.errors, status: :unprocessable_entity }
+        error_msg = 'Unexpected error while creating reading list.'
+        if @reading_list.errors.messages.count > 0
+          error_msg = 'Following error(s) prevented the reading list from being saved: '
+          multiple = false
+          @reading_list.errors.full_messages.each do |msg|
+            if multiple
+              error_msg += ', '
+            end
+            error_msg += msg
+            multiple = true
+          end
+        end
+        format.html { redirect_to @reading_list, :notice => error_msg }
+        format.json { render :json => @reading_list.errors, :status => :unprocessable_entity }
       end
     end
   end
