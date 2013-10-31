@@ -14,6 +14,8 @@ class ReadingListPapersController < ApplicationController
   # GET /reading_list_papers/1.json
   def show
     @reading_list_paper = ReadingListPaper.find(params[:id])
+    @paper = @reading_list_paper.paper
+    @reading_list = @reading_list_paper.reading_list
 
     respond_to do |format|
       format.html # show.html.erb

@@ -1,15 +1,8 @@
-<p id="notice"><%= notice %></p>
+<h4><%= @paper.title %></h4>
+<dl class="dl-horizontal reading-list-paper-dl">
+  <dt>Author:</dt><dd><%= @paper.author %></dd>
+  <dt>Year:</dt><dd><%= @paper.year %></dt>
+  <dt>Publication:</dt><dd><%= @paper.publication %></dt>
+</dl>
 
-<p>
-  <b>Reading list:</b>
-  <%= @reading_list_paper.reading_list_id %>
-</p>
-
-<p>
-  <b>Paper:</b>
-  <%= @reading_list_paper.paper_id %>
-</p>
-
-
-<%= link_to 'Edit', edit_reading_list_paper_path(@reading_list_paper) %> |
-<%= link_to 'Back', reading_list_papers_path %>
+<%= link_to 'Back', @reading_list %>

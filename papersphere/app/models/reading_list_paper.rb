@@ -41,5 +41,9 @@ class ReadingListPaper < ActiveRecord::Base
 
     status
   end
-
+  
+  def self.reading_list_paper_for(reading_list_id, paper_id)
+    ReadingListPaper.where(reading_list_id: reading_list_id, paper_id: paper_id)[0]
+  end
+  
 end
