@@ -42,6 +42,23 @@ class ReadingListSharesController < ApplicationController
   def create
     @reading_list_share = ReadingListShare.new(params[:reading_list_share])
 
+    if @reading_list_share.reading_list.user != current_user
+      respond_to do |format|
+        format.html { redirect_to @reading_list_share.reading_list, notice: 'User not authorized.' }
+        format.json { render json: @reading_list_share, status: :not_authorized, location: @reading_list_share }
+      end
+      return
+    end
+    
+    group = Group.find(params[:reading_list_share][:group_id])
+    if @reading_list_share.reading_list.has_group(group)
+      respond_to do |format|
+        format.html { redirect_to @reading_list_share.reading_list, notice: 'Group share already exists.' }
+        format.json { render json: @reading_list_share, status: :created, location: @reading_list_share }
+      end
+      return
+    end
+      
     respond_to do |format|
       if @reading_list_share.save
         format.html { redirect_to @reading_list_share.reading_list, notice: 'Reading list share was successfully created.' }
@@ -58,6 +75,14 @@ class ReadingListSharesController < ApplicationController
   def update
     @reading_list_share = ReadingListShare.find(params[:id])
 
+    if @reading_list_share.reading_list.user != current_user
+      respond_to do |format|
+        format.html { redirect_to @reading_list_share.reading_list, notice: 'User not authorized.' }
+        format.json { render json: @reading_list_share, status: :not_authorized, location: @reading_list_share }
+      end
+      return
+    end
+      
     respond_to do |format|
       if @reading_list_share.update_attributes(params[:reading_list_share])
         format.html { redirect_to @reading_list_share, notice: 'Reading list share was successfully updated.' }
@@ -75,6 +100,14 @@ class ReadingListSharesController < ApplicationController
     @reading_list_share = ReadingListShare.find(params[:id])
     @reading_list_share.destroy
 
+    if @reading_list_share.reading_list.user != current_user
+      respond_to do |format|
+        format.html { redirect_to @reading_list_share.reading_list, notice: 'User not authorized.' }
+        format.json { render json: @reading_list_share, status: :not_authorized, location: @reading_list_share }
+      end
+      return
+    end
+      
     respond_to do |format|
       format.html { redirect_to @reading_list_share.reading_list, notice: "Reading list share was deleted" }
       format.json { head :no_content }

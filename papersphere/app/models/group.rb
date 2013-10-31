@@ -2,6 +2,7 @@ class Group < ActiveRecord::Base
   belongs_to :owner, :class_name => 'User'
   has_many :group_members, :dependent => :destroy
   has_many :reading_list_shares, :dependent => :destroy
+  has_many :reading_lists, :through => :reading_list_shares
   attr_accessible :name
 
   validates :name, :presence => true
@@ -14,5 +15,4 @@ class Group < ActiveRecord::Base
     }
     false
   end
-
 end

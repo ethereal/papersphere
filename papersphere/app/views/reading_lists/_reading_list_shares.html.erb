@@ -8,7 +8,9 @@
         <tr>
             <td><%= link_to share.group.name , share.group %>
             <td><%= share.access_rights %></td>
-            <td><%= link_to 'Destroy', share, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <% if @reading_list.user == current_user %>
+              <td><%= link_to 'Destroy', share, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+            <% end %>
        </tr>
     <% end %>
 </table>

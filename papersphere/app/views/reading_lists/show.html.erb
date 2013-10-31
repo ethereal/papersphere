@@ -21,7 +21,8 @@
     <%= render :partial => 'reading_list_shares' %>
 </div>
 
-<%= form_for @reading_list_share do |f| %>
+<% if @reading_list.user == current_user %>
+  <%= form_for @reading_list_share do |f| %>
     <div class="field">
         <% options = [] %>
         <% current_user.owned_groups.each do |g| options << [g.name, g.id] end %>
@@ -36,6 +37,7 @@
     <div class="actions">
         <%= f.submit %>
     </div>
+  <% end %>
 <% end %>
 
 <%= link_to 'Edit', edit_reading_list_path(@reading_list) %> |

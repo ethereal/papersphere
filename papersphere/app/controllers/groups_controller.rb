@@ -61,6 +61,14 @@ class GroupsController < ApplicationController
   def update
     @group = Group.find(params[:id])
 
+    if @group.owner != current_user
+      respond_to do |format|
+        format.html { redirect_to @group, notice: 'User not authorized.' }
+        format.json { render json: @group, status: :not_authorized, location: group }
+      end
+      return
+    end
+      
     respond_to do |format|
       if @group.update_attributes(params[:group])
         format.html { redirect_to @group, notice: 'Group was successfully updated.' }
@@ -76,6 +84,15 @@ class GroupsController < ApplicationController
   # DELETE /groups/1.json
   def destroy
     @group = Group.find(params[:id])
+      
+    if @group.owner != current_user
+      respond_to do |format|
+        format.html { redirect_to @group, notice: 'User not authorized.' }
+        format.json { render json: @group, status: :not_authorized, location: group }
+      end
+      return
+    end
+      
     @group.destroy
 
     respond_to do |format|

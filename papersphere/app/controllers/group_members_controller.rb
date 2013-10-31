@@ -43,6 +43,15 @@ class GroupMembersController < ApplicationController
     member_email = params[:member_email]
     member = User.find_by_email(member_email)
     group = Group.find(params[:group_member][:group_id])
+      
+    if group.owner != current_user
+      respond_to do |format|
+        format.html { redirect_to group, notice: 'User not authorized.' }
+        format.json { render json: group, status: :not_authorized, location: group }
+      end
+      return
+    end
+      
     if member
       if !group.has_member(member_email)
         @group_member = GroupMember.new
@@ -69,6 +78,14 @@ class GroupMembersController < ApplicationController
   def update
     @group_member = GroupMember.find(params[:id])
 
+    if @group_member.group.owner != current_user
+      respond_to do |format|
+        format.html { redirect_to @group_member.group, notice: 'User not authorized.' }
+        format.json { render json: @group_member, status: :not_authorized, location: @group_member }
+      end
+      return
+    end
+      
     respond_to do |format|
       if @group_member.update_attributes(params[:group_member])
         format.html { redirect_to @group_member, notice: 'Group member was successfully updated.' }
@@ -84,6 +101,15 @@ class GroupMembersController < ApplicationController
   # DELETE /group_members/1.json
   def destroy
     @group_member = GroupMember.find(params[:id])
+
+    if @group_member.group.owner != current_user
+      respond_to do |format|
+        format.html { redirect_to @group_member.group, notice: 'User not authorized.' }
+        format.json { render json: @group_member, status: :not_authorized, location: @group_member }
+      end
+      return
+    end
+      
     @group_member.destroy
 
     respond_to do |format|
