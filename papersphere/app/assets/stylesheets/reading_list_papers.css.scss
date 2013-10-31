@@ -34,8 +34,14 @@
 }
 
 .comments-table {
+  
+  .comment-author {
+    float: left;
+  }
+  
   .timestamp {
     text-align: right;
     margin: 0;
   }
+  
 }

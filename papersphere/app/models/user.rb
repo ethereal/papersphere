@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
   has_many :owned_groups, :class_name => 'Group', :foreign_key => 'owner_id', :dependent => :destroy
   has_many :group_members, :dependent => :destroy
   has_many :groups, :through => :group_members
+  has_many :comments, :dependent => :destroy
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable

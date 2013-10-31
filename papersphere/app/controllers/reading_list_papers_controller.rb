@@ -79,7 +79,9 @@ class ReadingListPapersController < ApplicationController
   def update
     @reading_list_paper = ReadingListPaper.includes(:comments).find(params[:id])
     @reading_list_paper.comments ||= []
-    @reading_list_paper.comments << Comment.new(params[:comment])
+    new_comment = Comment.new(params[:comment])
+    new_comment.author = current_user
+    @reading_list_paper.comments << new_comment
     
     respond_to do |format|
       if @reading_list_paper.save

@@ -1,6 +1,9 @@
 <tr>
   <td>
-    <p class="timestamp"><%= comment.created_at %></p>
-    <p><%= comment.text %></p>
+    <div class="clearfix">
+      <p class="comment-author"><%= comment.author.name %> said: </p>
+      <p class="timestamp"><%= comment.created_at %></p>    
+    </div>
+    <p class="comment-text"><%= comment.text %></p>
   </td>
 </tr>
