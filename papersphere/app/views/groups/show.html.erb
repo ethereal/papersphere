@@ -6,7 +6,8 @@
     <%= render @group.group_members %>
 </table>
 
-<%= form_for @group_member do |f| %>
+<% if @group_member.group.owner == current_user %>
+  <%= form_for @group_member do |f| %>
     <div class="field">
         New Group Member (E-mail):<br />
         <input name="member_email" type="text"/>
@@ -17,6 +18,7 @@
     <div class="actions">
         <%= f.submit %>
     </div>
+  <% end %>
 <% end %>
 
 <br/>
