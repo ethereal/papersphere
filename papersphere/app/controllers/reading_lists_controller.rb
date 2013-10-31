@@ -15,6 +15,9 @@ class ReadingListsController < ApplicationController
   # GET /reading_lists/1.json
   def show
     @reading_list = ReadingList.find(params[:id])
+      
+    @reading_list_share = ReadingListShare.new
+    @reading_list_share.reading_list = @reading_list
 
     respond_to do |format|
       format.html # show.html.erb

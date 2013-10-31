@@ -44,7 +44,7 @@ class ReadingListSharesController < ApplicationController
 
     respond_to do |format|
       if @reading_list_share.save
-        format.html { redirect_to @reading_list_share, notice: 'Reading list share was successfully created.' }
+        format.html { redirect_to @reading_list_share.reading_list, notice: 'Reading list share was successfully created.' }
         format.json { render json: @reading_list_share, status: :created, location: @reading_list_share }
       else
         format.html { render action: "new" }
@@ -76,7 +76,7 @@ class ReadingListSharesController < ApplicationController
     @reading_list_share.destroy
 
     respond_to do |format|
-      format.html { redirect_to reading_list_shares_url }
+      format.html { redirect_to @reading_list_share.reading_list, notice: "Reading list share was deleted" }
       format.json { head :no_content }
     end
   end

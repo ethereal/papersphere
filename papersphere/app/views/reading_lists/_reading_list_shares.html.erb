@@ -2,11 +2,13 @@
 	<tr>
 	    <td>Group</td>
 	    <td>Access Rights</td>
+	    <td></td>
 	<tr>	
     <% @reading_list.reading_list_shares.each do |share| %>
         <tr>
             <td><%= link_to share.group.name , share.group %>
             <td><%= share.access_rights %></td>
+            <td><%= link_to 'Destroy', share, method: :delete, data: { confirm: 'Are you sure?' } %></td>
        </tr>
     <% end %>
 </table>
