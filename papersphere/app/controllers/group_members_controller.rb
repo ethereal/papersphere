@@ -59,6 +59,7 @@ class GroupMembersController < ApplicationController
         @group_member.group = group
         if @group_member.save
           message = "Successfully added #{member_email} to the group"
+          AddUserToGroupNotifier.added(@group_member.user, @group_member.group).deliver
         end
       else
         message = "Group already contains the member #{member_email}"
