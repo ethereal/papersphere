@@ -26,6 +26,10 @@ list = ReadingList.create(:name => 'Distributed Systems')
 list.user = user
 list.save
 
+list1 = ReadingList.create(:name => 'MAE Reading List')
+list1.user = user1
+list1.save
+
 list_item1 = ReadingListPaper.create
 list_item1.reading_list = list
 list_item1.paper = paper1
@@ -86,5 +90,5 @@ share1.save
 
 share2 = ReadingListShare.create(:access_rights => 'readwrite')
 share2.group = group2
-share2.reading_list = list
+share2.reading_list = list1
 share2.save

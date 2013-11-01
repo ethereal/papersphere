@@ -58,6 +58,14 @@ class ReadingListSharesController < ApplicationController
       end
       return
     end
+
+    if @reading_list_share.reading_list.user != @reading_list_share.group.owner
+      respond_to do |format|
+        format.html { redirect_to @reading_list_share.reading_list, notice: 'Group and reading list must belong to the same user.' }
+        format.json { render json: @reading_list_share, status: :created, location: @reading_list_share }
+      end
+      return
+    end
       
     respond_to do |format|
       if @reading_list_share.save
