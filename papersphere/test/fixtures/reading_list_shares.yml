@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  group_id: 1
-  reading_list_id: 1
+  group: one
+  reading_list: one
   access_rights: MyString
 
 two:
-  group_id: 1
-  reading_list_id: 1
+  group: one
+  reading_list: two
   access_rights: MyString

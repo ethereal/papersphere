@@ -18,12 +18,12 @@ class ReadingListSharesControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should create reading_list_share" do
-    assert_difference('ReadingListShare.count') do
+  test "should not create duplicate reading_list_share" do
+    assert_no_difference('ReadingListShare.count') do
       post :create, reading_list_share: { access_rights: @reading_list_share.access_rights, group_id: @reading_list_share.group_id, reading_list_id: @reading_list_share.reading_list_id }
     end
 
-    assert_redirected_to reading_list_share_path(assigns(:reading_list_share))
+    assert_redirected_to @reading_list_share.reading_list
   end
 
   test "should show reading_list_share" do
@@ -46,6 +46,6 @@ class ReadingListSharesControllerTest < ActionController::TestCase
       delete :destroy, id: @reading_list_share
     end
 
-    assert_redirected_to reading_list_shares_path
+    assert_redirected_to @reading_list_share.reading_list
   end
 end
