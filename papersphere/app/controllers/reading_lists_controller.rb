@@ -83,7 +83,7 @@ class ReadingListsController < ApplicationController
 
     respond_to do |format|
       if list_name_exists
-        format.html { redirect_to @reading_list, :notice => "You already have a list by the name '#{new_list_name}'." }
+        format.html { redirect_to @reading_list, :alert => "You already have a list by the name '#{new_list_name}'." }
         format.json { head :no_content }
       elsif new_list_name == @reading_list.name
         format.html { redirect_to @reading_list }
@@ -104,7 +104,7 @@ class ReadingListsController < ApplicationController
             multiple = true
           end
         end
-        format.html { redirect_to @reading_list, :notice => error_msg }
+        format.html { redirect_to @reading_list, :alert => error_msg }
         format.json { render :json => @reading_list.errors, :status => :unprocessable_entity }
       end
     end
