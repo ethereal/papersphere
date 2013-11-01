@@ -1,12 +1,25 @@
-<table border="1">
-	<tr>
-	    <td>Reading List</td>
-	    <td>Access Rights</td>
-	<tr>	
-    <% @group.reading_list_shares.each do |share| %>
-        <tr>
-            <td><%= link_to share.reading_list.name , share.reading_list %></td>
-            <td><%= share.access_rights %></td>
-       </tr>
-    <% end %>
-</table>
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Reading Lists Shared with the Group (<%= @group.reading_list_shares.count %>)</div>
+            <div class="panel-body">
+                <% if @group.reading_list_shares.count > 0 %>
+                    <table border="1">
+                        <tr>
+                            <td>Reading List</td>
+                            <td>Access Rights</td>
+                        <tr>
+                            <% @group.reading_list_shares.each do |share| %>
+                            <tr>
+                                <td><%= link_to share.reading_list.name , share.reading_list %></td>
+                                <td><%= share.access_rights %></td>
+                            </tr>
+                        <% end %>
+                    </table>
+                <% else %>
+                    <div class="alert alert-info">No lists have been shared with this group.</div>
+                <% end %>
+            </div>
+        </div>
+    </div>
+</div>

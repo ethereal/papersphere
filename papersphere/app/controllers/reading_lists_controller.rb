@@ -59,7 +59,7 @@ class ReadingListsController < ApplicationController
             multiple = true
           end
         end
-        format.html { redirect_to reading_lists_path, :action => 'index', :notice => error_msg }
+        format.html { redirect_to reading_lists_path, :action => 'index', :alert => error_msg }
         format.json { render :json => @reading_list.errors, :status => :unprocessable_entity }
       end
     end

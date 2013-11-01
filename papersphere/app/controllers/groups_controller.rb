@@ -3,6 +3,7 @@ class GroupsController < ApplicationController
   # GET /groups.json
   def index
     @groups = current_user.owned_groups
+    @group = Group.new
 
     respond_to do |format|
       format.html # index.html.erb
@@ -21,22 +22,6 @@ class GroupsController < ApplicationController
       format.html # show.html.erb
       format.json { render json: @group }
     end
-  end
-
-  # GET /groups/new
-  # GET /groups/new.json
-  def new
-    @group = Group.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @group }
-    end
-  end
-
-  # GET /groups/1/edit
-  def edit
-    @group = Group.find(params[:id])
   end
 
   # POST /groups

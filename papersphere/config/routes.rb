@@ -12,7 +12,7 @@ Papersphere::Application.routes.draw do
   match '/remove_paper_from_list' => 'reading_list_papers#remove_paper_from_list', :as => 'remove_paper_from_list'
 
 
-  resources :groups
+  resources :groups, :except => [ :new, :edit ]
 
 
   resources :papers

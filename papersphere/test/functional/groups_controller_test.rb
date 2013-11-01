@@ -13,11 +13,6 @@ class GroupsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:groups)
   end
 
-  test "should get new" do
-    get :new
-    assert_response :success
-  end
-
   test "should create group" do
     assert_difference('Group.count') do
       post :create, group: { name: @group.name }
@@ -28,11 +23,6 @@ class GroupsControllerTest < ActionController::TestCase
 
   test "should show group" do
     get :show, id: @group
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get :edit, id: @group
     assert_response :success
   end
 
