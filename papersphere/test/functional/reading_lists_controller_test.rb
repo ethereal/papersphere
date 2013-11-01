@@ -13,11 +13,6 @@ class ReadingListsControllerTest < ActionController::TestCase
     assert_not_nil assigns(:reading_lists)
   end
 
-  test "should get new" do
-    get :new
-    assert_response :success
-  end
-
   test "should create reading_list" do
     assert_difference('ReadingList.count') do
       post :create, reading_list: { name: 'new_reading_list' }
@@ -28,11 +23,6 @@ class ReadingListsControllerTest < ActionController::TestCase
 
   test "should show reading_list" do
     get :show, id: @reading_list
-    assert_response :success
-  end
-
-  test "should get edit" do
-    get :edit, id: @reading_list
     assert_response :success
   end
 

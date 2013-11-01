@@ -18,7 +18,7 @@ Papersphere::Application.routes.draw do
   resources :papers
 
 
-  resources :reading_lists
+  resources :reading_lists, :except => [ :new, :edit ]
 
 
   devise_for :users, controllers: { :omniauth_callbacks => "users/omniauth_callbacks" }

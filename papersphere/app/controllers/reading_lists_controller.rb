@@ -26,22 +26,6 @@ class ReadingListsController < ApplicationController
     end
   end
 
-  # GET /reading_lists/new
-  # GET /reading_lists/new.json
-  def new
-    @reading_list = ReadingList.new
-
-    respond_to do |format|
-      format.html # new.html.erb
-      format.json { render json: @reading_list }
-    end
-  end
-
-  # GET /reading_lists/1/edit
-  def edit
-    @reading_list = ReadingList.find(params[:id])
-  end
-
   # POST /reading_lists
   # POST /reading_lists.json
   def create
