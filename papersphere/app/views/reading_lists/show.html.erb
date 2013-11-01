@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <script type="text/javascript">
     function valform(event) {
         alert('ok');
@@ -43,7 +41,7 @@
             </div>
         </div>
     </div>
-    <%= render 'form' %>
+    <%= render 'form', :form_title => 'Rename Reading List' %>
     <div class="col-md-4">
         <div class="panel panel-primary">
             <div class="panel-heading">Sharing</div>

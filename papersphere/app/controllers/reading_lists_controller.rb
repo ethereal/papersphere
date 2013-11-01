@@ -4,6 +4,7 @@ class ReadingListsController < ApplicationController
   def index
     @reading_lists = current_user.reading_lists
     @reading_list = ReadingList.new
+    @shared_lists = ReadingListsHelper::get_shared_lists(current_user)
 
     respond_to do |format|
       format.html # index.html.erb
