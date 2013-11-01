@@ -1,0 +1,8 @@
+namespace :setup do
+    desc 'Create custom directory'
+    task :create_my_dir do
+        puts '************** HELLO **************'
+        mkdir_p '/home/ubuntu/foobar'
+    end
+    after 'deploy:updated', :create_my_dir
+end
