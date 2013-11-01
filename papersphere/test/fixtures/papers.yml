@@ -1,11 +1,11 @@
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
 
 one:
-  title: MyString
-  author: MyString
+  title: Paper1
+  author: Author et al
   year: 1
-  publication: MyString
-  url: MyString
+  publication: Awesom-O
+  url: foo.com
   paper_code: TEST_100
 
 two:

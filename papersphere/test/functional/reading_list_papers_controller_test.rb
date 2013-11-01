@@ -84,9 +84,11 @@ class ReadingListPapersControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should update reading_list_paper" do
-    put :update, id: @reading_list_paper, reading_list_paper: { paper_id: @reading_list_paper.paper_id, reading_list_id: @reading_list_paper.reading_list_id }
-    assert_redirected_to reading_list_paper_path(assigns(:reading_list_paper))
+  test "should update reading_list_paper through ajax" do
+    assert_difference "Comment.count", 1 do
+      xhr :put, :update, id: @reading_list_paper, comment: { text: "First!" }
+    end    
+    assert_response :success
   end
 
   test "should destroy reading_list_paper" do
