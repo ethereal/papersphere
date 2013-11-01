@@ -44,6 +44,27 @@
         </div>
     </div>
     <%= render 'form' %>
+    <div class="col-md-4">
+        <div class="panel panel-primary">
+            <div class="panel-heading">Sharing</div>
+            <div class="panel-body">
+                <%= render :partial => 'reading_list_shares' %>
+                <% if @reading_list.user == current_user %>
+                    <div class="form form-inline">
+                    <%= form_for @reading_list_share do |f| %>
+                        <% options = [] %>
+                        <% current_user.owned_groups.each do |g| options << [g.name, g.id] end %>
+                        <%= f.select :group_id, options_for_select(options), {}, :class => 'form-control' %>
+                        <% options = [["View List", "listonly"], ["View Discussion", "readonly"], ["Comment", "comment"], ["Contribute", "contribute"]] %>
+                        <%= f.select :access_rights, options_for_select(options), {}, :class => 'form-control' %>
+                        <%= f.hidden_field :reading_list_id, :value => @reading_list.id %>
+                        <%= f.submit 'Share', :class => 'btn btn-primary' %>
+                    <% end %>
+                    </div>
+                <% end %>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="row">
     <div class="col-md-12">
@@ -51,29 +72,3 @@
     </div>
 </div>
 
-<h3>Shared with</h3>
-<div id="share-listing">
-    <%= render :partial => 'reading_list_shares' %>
-</div>
-
-<% if @reading_list.user == current_user %>
-  <%= form_for @reading_list_share do |f| %>
-    <div class="field">
-        <% options = [] %>
-        <% current_user.owned_groups.each do |g| options << [g.name, g.id] end %>
-        <%= f.select :group_id, options_for_select(options) %>
-    </div>
-    <div class="field">
-        <%= f.select :access_rights, options_for_select([["View List", "listonly"], ["View Discussion", "readonly"], ["Comment", "comment"], ["Contribute", "contribute"]]) %>
-    </div>
-   <div class="field">
-        <%= f.hidden_field :reading_list_id, :value => @reading_list.id %>
-    </div>
-    <div class="actions">
-        <%= f.submit %>
-    </div>
-  <% end %>
-<% end %>
-
-<%= link_to 'Edit', edit_reading_list_path(@reading_list) %> |
-<%= link_to 'Back', reading_lists_path %>
