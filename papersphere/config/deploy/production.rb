@@ -3,7 +3,10 @@ set :stage, :production
 set :rvm_type, :user #Tell rvm to look in ~/.rvm
 set :rvm_ruby_version, '2.0.0-p247'
 
-set :server_name, %w{ec2-54-204-168-32.compute-1.amazonaws.com}
+server_host = ENV['PROD_SERVER_HOST']
+access_key = ENV['PROD_SERVER_KEY']
+
+set :server_name, [ server_host ]
 
 # Simple Role Syntax
 # ==================
@@ -29,7 +32,7 @@ role :all, fetch(:server_name) # This doesn't work completely yet, hence the abo
 # set it globally
 set :ssh_options, {
     user: %{ubuntu},                # The user we want to log in as
-    keys: %w{/Users/hiranya/academic/ss_290b/projects/PaperSphere-Hiranya.pem}, # Your .pem file
+    keys: [ access_key ], # Your .pem file
     forward_agent: true,          # In order for our EC2 instance to be able to access Github via ssh we need to forward our local ssh agent (since we have set up Github to accept that)
     auth_methods: %w(publickey)   # We are using ssh with .pem files
 }
