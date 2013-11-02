@@ -3,7 +3,7 @@ set :stage, :production
 set :rvm_type, :user #Tell rvm to look in ~/.rvm
 set :rvm_ruby_version, '2.0.0-p247'
 
-set :server_name, %w{ec2-50-16-177-210.compute-1.amazonaws.com}
+set :server_name, %w{ec2-54-204-168-32.compute-1.amazonaws.com}
 
 # Simple Role Syntax
 # ==================
