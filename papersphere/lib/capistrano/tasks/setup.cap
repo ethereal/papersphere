@@ -1,8 +1,23 @@
 namespace :setup do
     desc 'Create custom directory'
     task :create_my_dir do
-        puts '************** HELLO **************'
-        mkdir_p '/home/ubuntu/foobar'
+        subdir = 'papersphere'
+        on roles(:web) do
+            execute "mv #{release_path}/#{subdir}/ /tmp && rm -rf #{release_path}/* && mv /tmp/#{subdir}/* #{release_path} && rm -rf /tmp/#{subdir}"
+        end
     end
-    after 'deploy:updated', :create_my_dir
+    after 'deploy:updating', 'setup:create_my_dir'
+
+    namespace :db do
+        desc 'Create database'
+        task :create do
+            on roles(:db) do
+                within release_path do
+                    execute :rake, "db:create"
+                end
+             end
+        end
+        before :create, 'rvm:hook'
+        before :create, 'bundler:install'
+    end
 end
