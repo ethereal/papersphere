@@ -2,6 +2,11 @@ class ReadingListPaper < ActiveRecord::Base
   belongs_to :reading_list
   belongs_to :paper
   has_many :comments
+  has_many :recent_comments,
+    class_name: "Comment",
+    order: "created_at DESC",
+    limit: 10
+  
   attr_accessible :paper_id, :reading_list_id
 
   TXN_INCOMPLETE = :rlp_txn_incomplete
