@@ -4,6 +4,7 @@ class User < ActiveRecord::Base
   has_many :group_members, :dependent => :destroy
   has_many :groups, :through => :group_members
   has_many :comments, :dependent => :destroy
+  has_many :ratings, :dependent => :destroy
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable

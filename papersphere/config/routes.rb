@@ -11,6 +11,7 @@ Papersphere::Application.routes.draw do
   resources :reading_list_papers
   match '/remove_paper_from_list' => 'reading_list_papers#remove_paper_from_list', :as => 'remove_paper_from_list'
 
+  resources :ratings, :only => [ :create, :update ]
 
   resources :groups, :except => [ :new, :edit ]
 

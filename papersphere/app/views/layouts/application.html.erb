@@ -69,5 +69,8 @@
   <%= yield %>
   </div>
 
+  <% if content_for? :scripts %>
+    <%= yield :scripts %>
+  <% end %>
 </body>
 </html>

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131031043910) do
+ActiveRecord::Schema.define(:version => 20131104061239) do
 
   create_table "comments", :force => true do |t|
     t.string   "text"
@@ -47,6 +47,14 @@ ActiveRecord::Schema.define(:version => 20131031043910) do
   end
 
   add_index "papers", ["paper_code"], :name => "index_papers_on_paper_code", :unique => true
+
+  create_table "ratings", :force => true do |t|
+    t.integer  "reading_list_paper_id"
+    t.integer  "user_id"
+    t.integer  "value"
+    t.datetime "created_at",            :null => false
+    t.datetime "updated_at",            :null => false
+  end
 
   create_table "reading_list_papers", :force => true do |t|
     t.integer  "reading_list_id"
