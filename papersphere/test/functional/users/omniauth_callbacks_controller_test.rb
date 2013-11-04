@@ -5,7 +5,7 @@ class Users::OmniauthCallbacksControllerTest < ActionController::TestCase
   
   def test_google_oauth2_logs_user_in_if_user_found
     User.expects(:find_for_google_oauth2).returns(users(:alice))
-    login users(:alice)
+    login_as users(:alice)
 
     @request.env["devise.mapping"] = Devise.mappings[:user]
     post :google_oauth2

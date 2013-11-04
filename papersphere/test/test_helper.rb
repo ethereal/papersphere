@@ -17,7 +17,7 @@ end
 
 class ActionController::TestCase
   
-  def login(user)
+  def login_as(user)
     sign_in user
   end
   
