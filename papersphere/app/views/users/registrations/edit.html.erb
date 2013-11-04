@@ -1,0 +1,47 @@
+
+<div class="page-header">
+<h1><%= resource_name.to_s.humanize %>'s Profile</h1>
+</div>
+
+<div class="container">
+<%= form_for(resource, :as => resource_name, :url => registration_path(resource_name), :html => { :method => :put }) do |f| %>
+<%= devise_error_messages!  %>
+
+<div><%= f.label :name %>
+<%= f.text_field :name, :autofocus => true, "class" => "form-control" %><br></div>
+
+<div><%= f.label :email %>
+  <%= f.email_field :email,  "class" => "form-control"%><br></div>
+
+  <% if devise_mapping.confirmable? && resource.pending_reconfirmation? %>
+  <div>Currently waiting confirmation for: <%= resource.unconfirmed_email %><br>
+  </div>
+  <% end %>
+
+  <div><%= f.label :password %> <i>(leave blank if you don't want to change it)</i>
+    <%= f.password_field :password, :autocomplete => "off", "class" => "form-control" %><br></div>
+
+  <div>
+    <%= f.label :password_confirmation %>
+    <%= f.password_field :password_confirmation, "class" => "form-control" %><br>
+  </div>
+
+  <div>
+    <%= f.label :current_password %> <i>(we need your current password to confirm your changes)</i>
+    <%= f.password_field :current_password, "class" => "form-control" %><br>
+  </div>
+
+<div class ="text_area" rows="4" cols="5" ><%= f.label :description %>
+<%= f.text_area :description, :autofocus => true, "class" => "form-control", "size" => "100", "rows" => "4",  "cols" => "5" %><br>
+</div>
+
+  <div>
+    <%= f.submit "Update", :class =>  'btn btn-primary' %><br><br>
+  </div>
+
+<% end %>
+
+<p><b>Unhappy?</b></p>
+  <p> <%= button_to "Cancel my account", registration_path(resource_name), :data => { :confirm => "Are you sure?" }, :method => :delete, :class => 'btn btn-danger' %></p>
+
+</div> <!-- /container -->
