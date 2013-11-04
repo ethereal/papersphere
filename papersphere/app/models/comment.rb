@@ -4,6 +4,6 @@ class Comment < ActiveRecord::Base
   
   attr_accessible :text
   
-  validates_presence_of :text, :author
+  validates_presence_of :text, :author, :reading_list_paper
   
 end
