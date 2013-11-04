@@ -39,10 +39,10 @@
       <ul class="nav navbar-nav navbar-right">
         <li class="<%= is_active('reading_lists') %>"><%= link_to 'My Reading Lists', reading_lists_path, :class => 'top-link' %></li>
         <li class="<%= is_active('groups') %>"><%= link_to 'My Groups', groups_path, :class => 'top-link' %></li>
-        <li class="<%= is_active('edit_user_registration') %>"><%= link_to 'My Profile', edit_user_registration_path, :class => 'top-link' %></li>
         <li class="dropdown">
           <a href="#" class="dropdown-toggle top-link" data-toggle="dropdown"><%= current_user.name %><b class="caret"></b></a>
           <ul class="dropdown-menu">
+            <li class="<%= is_active('edit_user_registration') %>"><%= link_to 'My Profile', edit_user_registration_path, :class => 'top-link' %></li>
               <li><%= link_to 'Log Out', '/users/sign_out', :method => :delete %></li>
           </ul>
         </li>
