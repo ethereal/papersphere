@@ -8,7 +8,7 @@ set :user, %{ubuntu}
 set :use_sudo, false
 set :latest_release_directory, File.join(fetch(:deploy_to), 'current')
 set :scm, :git
-set :branch, "capistrano"
+set :branch, "master"
 set :deploy_subdir, "papersphere/papersphere"
 
 # set :format, :pretty
