@@ -1,3 +1,5 @@
+require 'open-uri'
+
 class RemoteLibraryController < ApplicationController
   def search
     if params[:page]
@@ -15,7 +17,7 @@ class RemoteLibraryController < ApplicationController
     end
 
     if params[:query] != ''
-      @results = helper.search(params[:query], page)
+      @results = helper.search(URI::encode_www_form_component(params[:query]), page)
       @reading_list = ReadingList.find(params[:reading_list_id])
     else
       @results = :empty_query

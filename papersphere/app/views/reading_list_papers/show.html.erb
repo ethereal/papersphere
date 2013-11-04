@@ -1,6 +1,3 @@
-<% content_for :scripts do %>
-  <%= javascript_include_tag 'reading_list_paper_rating' %>
-<% end %>
 <div class="panel panel-default reading-list-paper-panel">
   
   <div class="panel-heading">
@@ -34,7 +31,11 @@
     <%= hidden_field_tag("reading_list_paper_id", @reading_list_paper.id) %>
   <% end %>
 </div>
-<p id="average-rating">Average Rating: <%= @reading_list_paper.average_rating %></p>
+<% if @reading_list_paper.average_rating.nil? %>
+  <p id="average-rating">No ratings yet.</p>
+<% else %>
+  <p id="average-rating">Average Rating: <%= @reading_list_paper.average_rating %></p>
+<% end %>
 <br />
 <%= link_to 'Back', @reading_list %>
 

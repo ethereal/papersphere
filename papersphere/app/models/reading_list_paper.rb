@@ -57,6 +57,8 @@ class ReadingListPaper < ActiveRecord::Base
   end
   
   def average_rating
+    return nil if ratings.empty?
+    
     value = 0
     ratings.each do |rating|
       value += rating.value
