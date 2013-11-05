@@ -110,11 +110,12 @@ class GroupMembersController < ApplicationController
       end
       return
     end
-      
+
+    group = @group_member.group
     @group_member.destroy
 
     respond_to do |format|
-      format.html { redirect_to group_members_url }
+      format.html { redirect_to group_url(group) }
       format.json { head :no_content }
     end
   end
