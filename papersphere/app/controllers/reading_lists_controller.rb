@@ -16,7 +16,14 @@ class ReadingListsController < ApplicationController
   # GET /reading_lists/1.json
   def show
     @reading_list = ReadingList.find(params[:id])
-    
+    if not ReadingListsHelper::has_access(@reading_list, current_user, ReadingListsHelper::READONLY)
+      @paper_mgt_notification = 'User not authorized.'
+      respond_to do |format|
+        format.html { redirect_to current_user.reading_lists, notice: @paper_mgt_notification }
+      end
+      return
+    end
+
     @reading_list_share = ReadingListShare.new
     @reading_list_share.reading_list = @reading_list
 
@@ -69,6 +76,14 @@ class ReadingListsController < ApplicationController
   # PUT /reading_lists/1.json
   def update
     @reading_list = ReadingList.find(params[:id])
+    if not ReadingListsHelper::has_access(@reading_list, current_user, ReadingListsHelper::OWNER)
+      @paper_mgt_notification = 'User not authorized.'
+      respond_to do |format|
+        format.html { redirect_to @reading_list, notice: @paper_mgt_notification }
+        format.js {}
+      end
+      return
+    end
 
     new_list_name = params[:reading_list][:name]
     list_name_exists = false
@@ -114,6 +129,15 @@ class ReadingListsController < ApplicationController
   # DELETE /reading_lists/1.json
   def destroy
     @reading_list = ReadingList.find(params[:id])
+    if not ReadingListsHelper::has_access(@reading_list, current_user, ReadingListsHelper::OWNER)
+      @paper_mgt_notification = 'User not authorized.'
+      respond_to do |format|
+        format.html { redirect_to @reading_list, notice: @paper_mgt_notification }
+        format.js {}
+      end
+      return
+    end
+
     @reading_list.destroy
 
     respond_to do |format|

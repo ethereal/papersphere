@@ -17,6 +17,16 @@ class ReadingListPapersController < ApplicationController
     @paper = @reading_list_paper.paper
     @reading_list = @reading_list_paper.reading_list
 
+    @reading_list = @reading_list_paper.reading_list
+    if not ReadingListsHelper::has_access(@reading_list, current_user, ReadingListsHelper::READONLY)
+      @paper_mgt_notification = 'User not authorized.'
+      respond_to do |format|
+        format.html { redirect_to @reading_list, notice: @paper_mgt_notification }
+        format.js {}
+      end
+      return
+    end
+    
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @reading_list_paper }

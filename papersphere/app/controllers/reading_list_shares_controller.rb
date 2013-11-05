@@ -41,15 +41,16 @@ class ReadingListSharesController < ApplicationController
   # POST /reading_list_shares.json
   def create
     @reading_list_share = ReadingListShare.new(params[:reading_list_share])
-
-    if @reading_list_share.reading_list.user != current_user
+    @reading_list = @reading_list_share.reading_list
+    if not ReadingListsHelper::has_access(@reading_list, current_user, ReadingListsHelper::OWNER)
+      @paper_mgt_notification = 'User not authorized.'
       respond_to do |format|
-        format.html { redirect_to @reading_list_share.reading_list, notice: 'User not authorized.' }
-        format.json { render json: @reading_list_share, status: :not_authorized, location: @reading_list_share }
+        format.html { redirect_to @reading_list, notice: @paper_mgt_notification }
+        format.js {}
       end
       return
     end
-    
+
     group = Group.find(params[:reading_list_share][:group_id])
     if @reading_list_share.reading_list.has_group(group)
       respond_to do |format|
@@ -82,11 +83,12 @@ class ReadingListSharesController < ApplicationController
   # PUT /reading_list_shares/1.json
   def update
     @reading_list_share = ReadingListShare.find(params[:id])
-
-    if @reading_list_share.reading_list.user != current_user
+    @reading_list = @reading_list_share.reading_list
+    if not ReadingListsHelper::has_access(@reading_list, current_user, ReadingListsHelper::OWNER)
+      @paper_mgt_notification = 'User not authorized.'
       respond_to do |format|
-        format.html { redirect_to @reading_list_share.reading_list, notice: 'User not authorized.' }
-        format.json { render json: @reading_list_share, status: :not_authorized, location: @reading_list_share }
+        format.html { redirect_to @reading_list, notice: @paper_mgt_notification }
+        format.js {}
       end
       return
     end
@@ -106,16 +108,18 @@ class ReadingListSharesController < ApplicationController
   # DELETE /reading_list_shares/1.json
   def destroy
     @reading_list_share = ReadingListShare.find(params[:id])
-    @reading_list_share.destroy
-
-    if @reading_list_share.reading_list.user != current_user
+    @reading_list = @reading_list_share.reading_list
+    if not ReadingListsHelper::has_access(@reading_list, current_user, ReadingListsHelper::OWNER)
+      @paper_mgt_notification = 'User not authorized.'
       respond_to do |format|
-        format.html { redirect_to @reading_list_share.reading_list, notice: 'User not authorized.' }
-        format.json { render json: @reading_list_share, status: :not_authorized, location: @reading_list_share }
+        format.html { redirect_to @reading_list, notice: @paper_mgt_notification }
+        format.js {}
       end
       return
     end
-      
+
+    @reading_list_share.destroy
+
     respond_to do |format|
       format.html { redirect_to @reading_list_share.reading_list, notice: "Reading list share was deleted" }
       format.json { head :no_content }
