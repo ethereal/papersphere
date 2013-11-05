@@ -79,18 +79,6 @@ class ReadingListPapersControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should get edit" do
-    get :edit, id: @reading_list_paper
-    assert_response :success
-  end
-
-  test "should update reading_list_paper through ajax" do
-    assert_difference "Comment.count", 1 do
-      xhr :put, :update, id: @reading_list_paper, comment: { text: "First!" }
-    end    
-    assert_response :success
-  end
-
   test "should destroy reading_list_paper" do
     assert_difference('ReadingListPaper.count', -1) do
       delete :destroy, id: @reading_list_paper

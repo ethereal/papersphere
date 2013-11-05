@@ -44,11 +44,6 @@ class ReadingListPapersController < ApplicationController
     end
   end
 
-  # GET /reading_list_papers/1/edit
-  def edit
-    @reading_list_paper = ReadingListPaper.find(params[:id])
-  end
-
   # POST /reading_list_papers
   # POST /reading_list_papers.json
   def create
@@ -92,25 +87,6 @@ class ReadingListPapersController < ApplicationController
 
     respond_to do |format|
       format.js
-    end
-  end
-
-  # PUT /reading_list_papers/1
-  def update
-    # TODO check access rights
-    
-    @reading_list_paper = ReadingListPaper.includes(:comments).find(params[:id])
-    @reading_list_paper.comments ||= []
-    new_comment = Comment.new(params[:comment])
-    new_comment.author = current_user
-    @reading_list_paper.comments << new_comment
-    
-    respond_to do |format|
-      if @reading_list_paper.save
-        format.js {}
-      else
-        format.js {}
-      end
     end
   end
 

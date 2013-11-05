@@ -1,4 +1,4 @@
-<% if @reading_list_paper.errors.empty? %>
+<% if @comment.errors.empty? %>
   var commentsTable = $('.page-content').find('.comments-table');
   if (commentsTable.size() == 0) {
     $('#empty-table-msg').before("<%=j render 'comments', comments: @reading_list_paper.comments %>").remove();

@@ -39,8 +39,7 @@
 <br />
 <%= link_to 'Back', @reading_list %>
 
-<%= form_for @reading_list_paper,
-    method: :put,
+<%= form_for Comment.new,
     remote: true,
     :html => { role: "form", :class => "comment-form" } do |f| %>
   
@@ -48,6 +47,8 @@
       :class => "form-control comment-input",
       rows: 3, cols: 120,
       placeholder: "Enter comment..."  %>
+  
+  <%= hidden_field_tag "reading_list_paper_id", @reading_list_paper.id %>
       
   <%= f.submit "Post Comment",
       :class => "btn btn-primary btn-xs post-comment-btn" %>
@@ -55,7 +56,7 @@
 <% end %>
 
 <% if @reading_list_paper.recent_comments.present? %>
-  <%= render "comments", comments: @reading_list_paper.recent_comments %>
+  <%= render "comments/comments", comments: @reading_list_paper.recent_comments %>
 <% else %>
   <h4 id="empty-table-msg">No comments yet. Be the first to post!</h4>
 <% end %>

@@ -14,7 +14,6 @@
     <td><%= reading_list_paper.reading_list_id %></td>
     <td><%= link_to reading_list_paper.paper_id, reading_list_paper %></td>
     <td><%= link_to 'Show', reading_list_paper %></td>
-    <td><%= link_to 'Edit', edit_reading_list_paper_path(reading_list_paper) %></td>
     <td><%= link_to 'Destroy', reading_list_paper, method: :delete, data: { confirm: 'Are you sure?' } %></td>
   </tr>
 <% end %>
