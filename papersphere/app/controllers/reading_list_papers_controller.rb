@@ -42,6 +42,16 @@ class ReadingListPapersController < ApplicationController
   # POST /reading_list_papers
   # POST /reading_list_papers.json
   def create
+    @reading_list = ReadingList.find(params[:reading_list_id])
+    if not ReadingListsHelper::has_access(@reading_list, current_user, ReadingListsHelper::READWRITE)
+      @paper_mgt_notification = 'User not authorized.'
+      respond_to do |format|
+        format.html { redirect_to @reading_list, notice: @paper_mgt_notification }
+        format.js {}
+      end
+      return
+    end
+    
     paper = Paper.new
     paper.title = params[:paper_title]
     paper.author = params[:paper_authors]
@@ -77,6 +87,8 @@ class ReadingListPapersController < ApplicationController
 
   # PUT /reading_list_papers/1
   def update
+    # TODO check access rights
+    
     @reading_list_paper = ReadingListPaper.includes(:comments).find(params[:id])
     @reading_list_paper.comments ||= []
     new_comment = Comment.new(params[:comment])
@@ -96,6 +108,16 @@ class ReadingListPapersController < ApplicationController
   # DELETE /reading_list_papers/1.json
   def destroy
     @reading_list_paper = ReadingListPaper.find(params[:id])
+    @reading_list = @reading_list_paper.reading_list
+    if not ReadingListsHelper::has_access(@reading_list, current_user, ReadingListsHelper::READWRITE)
+      @paper_mgt_notification = 'User not authorized.'
+      respond_to do |format|
+        format.html { redirect_to @reading_list, notice: @paper_mgt_notification }
+        format.js {}
+      end
+      return
+    end
+
     @reading_list_paper.destroy
 
     respond_to do |format|
@@ -105,11 +127,21 @@ class ReadingListPapersController < ApplicationController
   end
 
   def remove_paper_from_list
+    @reading_list = ReadingList.find(params[:reading_list_id])
+    if not ReadingListsHelper::has_access(@reading_list, current_user, ReadingListsHelper::READWRITE)
+      @paper_mgt_notification = 'User not authorized.'
+      respond_to do |format|
+        format.html { redirect_to @reading_list, notice: @paper_mgt_notification }
+        format.js {}
+      end
+      return
+    end
+
     @reading_list_paper = ReadingListPaper.
         where(:reading_list_id => params[:reading_list_id]).
         where(:paper_id => params[:paper_id]).
         first
-
+        
     @paper_mgt_notification = ''
     @success = false
     if !@reading_list_paper.nil?

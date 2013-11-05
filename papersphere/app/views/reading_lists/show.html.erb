@@ -47,7 +47,7 @@
                             <% options = [] %>
                             <% current_user.owned_groups.each do |g| options << [g.name, g.id] end %>
                             <%= f.select :group_id, options_for_select(options), {}, :class => 'form-control' %>
-                            <% options = [["View List", "listonly"], ["View Discussion", "readonly"], ["Comment", "comment"], ["Contribute", "contribute"]] %>
+                            <% options = [["Read & Write", "readwrite"], ["Read Only", "readonly"], ["None", "none"]] %>
                             <%= f.select :access_rights, options_for_select(options), {}, :class => 'form-control' %>
                             <%= f.hidden_field :reading_list_id, :value => @reading_list.id %>
                             <%= f.submit 'Share', :class => 'btn btn-primary' %>

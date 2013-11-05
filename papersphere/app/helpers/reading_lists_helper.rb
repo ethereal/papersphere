@@ -55,7 +55,7 @@ module ReadingListsHelper
       return OWNER
     end
     reading_list.reading_list_shares.each do |share|
-      if share.group.members.include user
+      if share.group.users.include? user
         access_rights << share.access_rights
       end
     end
@@ -63,13 +63,13 @@ module ReadingListsHelper
   end
   
   def self.get_highest_access_right(access_rights)
-    if access_rights.include 'owner'
+    if access_rights.include? 'owner'
       return OWNER
     end
-    if access_rights.include 'readwrite'
+    if access_rights.include? 'readwrite'
       return READWRITE
     end
-    if access_rights.include 'readonly'
+    if access_rights.include? 'readonly'
       return READONLY
     end
     return NONE
