@@ -51,3 +51,17 @@ body {
 .top-link:hover {
     color: #6ecbff !important;
 }
+
+.breadcrumb {
+    position: fixed;
+    top:50px;
+    left: 0px; height:
+    30px;
+    width: 100%;
+    overflow: hidden;
+    padding-bottom: 10px;
+}
+
+.page-header {
+    padding-top: 1px;
+}

@@ -3,10 +3,13 @@
     <li><a href="<%= reading_list_url @reading_list %>"><%= @reading_list.name %></a></li>
     <li class="active"><%= @paper.title.truncate(40) %></li>
 </ol>
+<div class="page-header">
+    <h1><%= @paper.title %></h1>
+</div>
 <div class="panel panel-default reading-list-paper-panel">
   
   <div class="panel-heading">
-    <h3 class="panel-title"><%= @paper.title %></h3>
+    <h3 class="panel-title">Paper Details</h3>
   </div>
   
   <div class="panel-body">
@@ -18,9 +21,7 @@
   </div>
 </div>
 <div class="clearfix">
-  <%= link_to @paper.url, :class => "btn btn-primary full-paper-btn" do %>
-    <span class="glyphicon glyphicon-book"></span> Download the full paper
-  <% end %>
+  <%= button_to 'Download the full paper', @paper.url, :class => "btn btn-primary full-paper-btn" %>
   <%= form_for(rating_to_use_for_form, remote: true, :html => { :class => 'rating_ballot' }) do |f| %>
     <%= f.label("value_1", content_tag(:span, '1'), {:class=>"rating", :id=>"1"}) %>
     <%= radio_button_tag("rating[value]", 1, current_user_rating == 1, :class => 'rating_button') %>
@@ -41,8 +42,6 @@
 <% else %>
   <p id="average-rating">Average Rating: <%= @reading_list_paper.average_rating %></p>
 <% end %>
-<br />
-<%= link_to 'Back', @reading_list %>
 
 <%= form_for Comment.new,
     remote: true,
