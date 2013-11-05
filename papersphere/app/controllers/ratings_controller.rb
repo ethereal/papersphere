@@ -10,6 +10,8 @@ class RatingsController < ApplicationController
       end
       return
     end
+    
+    # TODO check if already rated
       
     @rating = Rating.new(params[:rating])
     @rating.reading_list_paper = @reading_list_paper
