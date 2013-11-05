@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   attr_accessible :email, :password, :password_confirmation, :remember_me,
                   :provider, :uid, :name, :first_name, :last_name, :description, :picture
 
-  validates_presence_of :first_name, :last_name
+  validates_presence_of :name
                   
   def self.find_for_google_oauth2(access_token, signed_in_resource=nil)
     data = access_token.info
