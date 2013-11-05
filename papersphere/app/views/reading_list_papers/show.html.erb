@@ -1,3 +1,8 @@
+<ol class="breadcrumb">
+    <li><a href="<%= reading_lists_path %>">Home</a></li>
+    <li><a href="<%= reading_list_url @reading_list %>"><%= @reading_list.name %></a></li>
+    <li class="active"><%= @paper.title.truncate(40) %></li>
+</ol>
 <div class="panel panel-default reading-list-paper-panel">
   
   <div class="panel-heading">
