@@ -19,8 +19,14 @@ class GroupsController < ApplicationController
     @group_member.group = @group
 
     respond_to do |format|
-      format.html # show.html.erb
-      format.json { render json: @group }
+      if @group.owner == current_user
+        format.html
+        format.json { render json: @group }
+      else
+        msg = "You are not authorized to access group #{params[:id]}."
+        format.html { redirect_to groups_url, alert: msg }
+        format.json { render json: msg }
+      end
     end
   end
 
