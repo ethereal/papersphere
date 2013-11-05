@@ -18,6 +18,12 @@ class GroupsController < ApplicationController
     @group_member = GroupMember.new
     @group_member.group = @group
 
+    if params[:from_reading_list]
+      @reading_list = ReadingList.find(params[:from_reading_list])
+    else
+      @reading_list = nil
+    end
+
     respond_to do |format|
       if @group.owner == current_user
         format.html

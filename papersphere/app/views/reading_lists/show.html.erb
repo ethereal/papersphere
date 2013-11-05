@@ -1,7 +1,15 @@
-<ol class="breadcrumb">
-    <li><a href="<%= reading_lists_path %>">Home</a></li>
-    <li class="active"><%= @reading_list.name %></li>
-</ol>
+<% if @group.nil? %>
+    <ol class="breadcrumb">
+        <li><a href="<%= reading_lists_path %>">Home</a></li>
+        <li class="active"><%= @reading_list.name %></li>
+    </ol>
+<% else %>
+    <ol class="breadcrumb">
+        <li><a href="<%= reading_lists_path %>">Home</a></li>
+        <li><a href="<%= group_path @group %>"><%= @group.name %></a></li>
+        <li class="active"><%= @reading_list.name %></li>
+    </ol>
+<% end %>
 <div class="page-header">
     <h1><%= @reading_list.name %></h1>
 </div>

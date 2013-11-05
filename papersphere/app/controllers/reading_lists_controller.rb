@@ -27,6 +27,12 @@ class ReadingListsController < ApplicationController
     @reading_list_share = ReadingListShare.new
     @reading_list_share.reading_list = @reading_list
 
+    if params[:from_group]
+      @group = Group.find(params[:from_group])
+    else
+      @group = nil
+    end
+
     respond_to do |format|
       format.html # show.html.erb
       format.json { render json: @reading_list }
