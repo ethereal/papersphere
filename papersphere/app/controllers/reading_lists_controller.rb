@@ -113,7 +113,7 @@ class ReadingListsController < ApplicationController
         format.html { redirect_to @reading_list, :notice => 'Reading list was successfully updated.' }
         format.json { head :no_content }
       else
-        error_msg = 'Unexpected error while creating reading list.'
+        error_msg = 'Unexpected error while updating reading list.'
         if @reading_list.errors.messages.count > 0
           error_msg = 'Following error(s) prevented the reading list from being saved: '
           multiple = false
