@@ -1,5 +1,5 @@
 class AddUserToGroupNotifier < ActionMailer::Base
-  default from: 'PaperSphere <ana.andro02@gmail.com>'
+  default from: 'PaperSphere <papersphere2013@gmail.com>'
 
   # Subject can be set in your I18n file at config/locales/en.yml
   # with the following lookup:

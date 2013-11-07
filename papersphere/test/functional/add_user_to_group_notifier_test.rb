@@ -7,7 +7,7 @@ class AddUserToGroupNotifierTest < ActionMailer::TestCase
     mail = AddUserToGroupNotifier.added(user, group)
     assert_equal "You have been added to the group.", mail.subject
     assert_equal [user.email], mail.to
-    assert_equal ["ana.andro02@gmail.com"], mail.from
+    assert_equal ["papersphere2013@gmail.com"], mail.from
   end
 
   test "removed" do
@@ -16,6 +16,6 @@ class AddUserToGroupNotifierTest < ActionMailer::TestCase
     mail = AddUserToGroupNotifier.removed(user, group)
     assert_equal "You have been removed from the group.", mail.subject
     assert_equal [user.email], mail.to
-    assert_equal ["ana.andro02@gmail.com"], mail.from
+    assert_equal ["papersphere2013@gmail.com"], mail.from
   end
 end
