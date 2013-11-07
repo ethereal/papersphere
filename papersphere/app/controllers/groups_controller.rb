@@ -41,14 +41,37 @@ class GroupsController < ApplicationController
   def create
     @group = Group.new(params[:group])
     @group.owner = current_user
+
+    group_name_exists = false
+    current_user.owned_groups.each do |g|
+      if g.name == @group.name
+        group_name_exists = true
+        break
+      end
+    end
     
     respond_to do |format|
-      if @group.save
-        format.html { redirect_to @group, notice: 'Group was successfully created.' }
-        format.json { render json: @group, status: :created, location: @group }
+      if group_name_exists
+        format.html { redirect_to groups_path, :alert => "You already have a list by the name '#{@group.name}'." }
+        format.json { render :json => @group, :status => :created, :location => @group }
+      elsif @group.save
+        format.html { redirect_to @group, :notice => 'Group was successfully created.' }
+        format.json { render :json => @group, :status => :created, :location => @group }
       else
-        format.html { render action: "new" }
-        format.json { render json: @group.errors, status: :unprocessable_entity }
+        error_msg = 'Unexpected error while creating group.'
+        if @group.errors.messages.count > 0
+          error_msg = 'Following error(s) prevented the group from being saved: '
+          multiple = false
+          @group.errors.full_messages.each do |msg|
+            if multiple
+              error_msg += ', '
+            end
+            error_msg += msg
+            multiple = true
+          end
+        end
+        format.html { redirect_to groups_path, :action => 'index', :alert => error_msg }
+        format.json { render :json => @group.errors, :status => :unprocessable_entity }
       end
     end
   end
