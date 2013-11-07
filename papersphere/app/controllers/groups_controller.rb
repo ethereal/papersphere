@@ -94,7 +94,7 @@ class GroupsController < ApplicationController
 
     if new_group_name != @group.name
       current_user.owned_groups.each do |g|
-        if g.name == new_group_name and @group.name != new_group_name
+        if g.name == new_group_name
           group_name_exists = true
         end
       end
