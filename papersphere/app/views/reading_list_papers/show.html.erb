@@ -48,10 +48,10 @@
           <tr>
               <td class="paper-info-header">Overall Rating</td>
               <td>
-                  <% if @reading_list_paper.average_rating.nil? %>
+                  <% if @reading_list_paper.global_rating.nil? %>
                       <p id="average-rating">Unrated</p>
                   <% else %>
-                      <p id="average-rating"><%= @reading_list_paper.average_rating %> / 5.0</p>
+                      <p id="average-rating"><%= @reading_list_paper.global_rating %> / 5.0</p>
                   <% end %>
               </td>
           </tr>
