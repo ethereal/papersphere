@@ -1,9 +1,10 @@
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-primary">
-            <div class="panel-heading">Reading Lists Shared with the Group (<%= @group.reading_list_shares.count %>)</div>
+            <% shared_lists = @group.reading_list_shares.count %>
+            <div class="panel-heading">Reading Lists Shared with the Group (<%= shared_lists %>)</div>
             <div class="panel-body">
-                <% if @group.reading_list_shares.count > 0 %>
+                <% if shared_lists > 0 %>
                     <table class="table table-striped table-hover">
                         <tr>
                             <th>Reading List</th>

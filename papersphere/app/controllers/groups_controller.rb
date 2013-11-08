@@ -2,7 +2,7 @@ class GroupsController < ApplicationController
   # GET /groups
   # GET /groups.json
   def index
-    @groups = current_user.owned_groups
+    @groups = Group.find_all_by_owner_id(current_user)
     @group = Group.new
 
     respond_to do |format|
@@ -14,7 +14,7 @@ class GroupsController < ApplicationController
   # GET /groups/1
   # GET /groups/1.json
   def show
-    @group = Group.find(params[:id])
+    @group = Group.includes(:users).find(params[:id])
     @group_member = GroupMember.new
     @group_member.group = @group
 
