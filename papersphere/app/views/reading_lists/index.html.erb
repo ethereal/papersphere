@@ -25,7 +25,7 @@
                         <% @reading_lists.each do |reading_list| %>
                           <tr>
                             <td><%= link_to reading_list.name , reading_list %>
-                            <td><%= reading_list.reading_list_papers.count %></td>
+                            <td>TODO: Get counts more efficiently</td>
                             <td>
                                 <%= link_to 'View', reading_list %> -
                                 <%= link_to 'Delete', reading_list, method: :delete, data: { confirm: 'Are you sure?' }  %>
@@ -56,7 +56,7 @@
                     <% @shared_lists.each do |shared_list| %>
                         <tr>
                             <td><%= link_to shared_list.name, shared_list %></td>
-                            <td><%= shared_list.reading_list_papers.count %></td>
+                            <td>TODO: Get counts more efficiently</td>
                             <td><%= shared_list.user.name %></td>
                         </tr>
                     <% end %>
