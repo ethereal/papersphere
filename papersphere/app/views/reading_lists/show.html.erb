@@ -13,6 +13,14 @@
 <div class="page-header">
     <h1><%= @reading_list.name %></h1>
 </div>
+<% if !@is_owner %>
+    <% if @has_modify_rights %>
+        <div class="label label-info">This list is shared with ReadWrite permissions. You can add/remove papers in this list.</div>
+    <% else %>
+        <div class="label label-warning">This list is shared with ReadOnly permissions. You cannot add/remove papers in this list.</div>
+    <% end %>
+    <br/><br/>
+<% end %>
 <div class="row">
     <div class="col-md-12">
         <div id="paper-listing">
@@ -62,7 +70,7 @@
                                 <% options = [] %>
                                 <% current_user.owned_groups.each do |g| options << [g.name, g.id] end %>
                                 <%= f.select :group_id, options_for_select(options), {}, :class => 'form-control' %>
-                                <% options = [["Read & Write", "readwrite"], ["Read Only", "readonly"], ["None", "none"]] %>
+                                <% options = [["Read & Write", "readwrite"], ["Read Only", "readonly"]] %>
                                 <%= f.select :access_rights, options_for_select(options), {}, :class => 'form-control' %>
                                 <%= f.hidden_field :reading_list_id, :value => @reading_list.id %>
                                 <%= f.submit 'Share', :class => 'btn btn-primary' %>

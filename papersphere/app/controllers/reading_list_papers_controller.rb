@@ -56,6 +56,9 @@ class ReadingListPapersController < ApplicationController
       end
       return
     end
+
+    @is_owner = @reading_list.user == current_user
+    @has_modify_rights = true
     
     paper = Paper.new
     paper.title = params[:paper_title]
@@ -123,6 +126,8 @@ class ReadingListPapersController < ApplicationController
       return
     end
 
+    @is_owner = @reading_list.user == current_user
+    @has_modify_rights = true
     @reading_list_paper = ReadingListPaper.
         where(:reading_list_id => params[:reading_list_id]).
         where(:paper_id => params[:paper_id]).
