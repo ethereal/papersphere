@@ -86,7 +86,9 @@
         <div id="paper_comments">
             <% if @reading_list_paper.recent_comments.present? %>
                 <%= render "comments/comments", comments: @reading_list_paper.recent_comments %>
+                <%= link_to "Load more comments...", load_comments_path, :remote => true, :class => "load-comments-button" %>
             <% end %>
         </div>
     </div>
 </div>
+

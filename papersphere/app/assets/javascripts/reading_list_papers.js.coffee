@@ -20,3 +20,33 @@ $ ->
   # Submits the form (saves data) after user makes a change.
   $('form.rating_ballot').change ->
     $('form.rating_ballot').submit()
+    
+  # Handles loading more comments dynamically
+  $('.load-comments-button').click (e) ->
+    e.preventDefault()
+    loadCommentsButton = $(this)
+    commentsDisplayedSoFar = $('table.comments-table tbody').find('tr').size()
+    readingListPaperId = $('form.comment-form input#reading_list_paper_id').val()
+    dataToSend = {
+      'reading_list_paper_id': readingListPaperId,
+      'comments_offset': commentsDisplayedSoFar
+    }
+    $.ajax '/comments',
+      type: 'GET'
+      dataType: 'json'
+      data: dataToSend
+      error: (jqXHR, textStatus, errorThrown) ->
+        # deal with error
+        console.log "Load Comments AJAX Error: #{textStatus}"
+        console.log "#{errorThrown}"
+        console.log "#{jqXHR}"
+      success: (data, textStatus, jqXHR) ->
+        # deal with success
+        if data? and Object.keys(data).length > 0
+          for k,comment of data
+            $('table.comments-table tbody').append comment
+        else
+          loadCommentsButton.remove()
+    false
+        
+    
