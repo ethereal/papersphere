@@ -19,13 +19,29 @@ class ReadingListsController < ApplicationController
     if not ReadingListsHelper::has_access(@reading_list, current_user, ReadingListsHelper::READONLY)
       @paper_mgt_notification = 'User not authorized.'
       respond_to do |format|
-        format.html { redirect_to current_user.reading_lists, notice: @paper_mgt_notification }
+        format.html { redirect_to current_user.reading_lists, alert: @paper_mgt_notification }
       end
       return
     end
 
+    @is_owner = false
+    @has_modify_rights = false
+    rights = ReadingListsHelper::get_shared_list_access_rights(@reading_list, current_user)
+    if rights == ReadingListsHelper::OWNER
+      @is_owner = true
+      @has_modify_rights = true
+    elsif rights == ReadingListsHelper::READWRITE
+      @has_modify_rights = true
+    end
+
     @reading_list_share = ReadingListShare.new
     @reading_list_share.reading_list = @reading_list
+
+    if params[:from_group]
+      @group = Group.find(params[:from_group])
+    else
+      @group = nil
+    end
 
     respond_to do |format|
       format.html # show.html.erb
@@ -90,8 +106,9 @@ class ReadingListsController < ApplicationController
 
     if new_list_name != @reading_list.name
       current_user.reading_lists.each do |rl|
-        if rl.name == new_list_name and @reading_list.name != new_list_name
+        if rl.name == new_list_name
           list_name_exists = true
+          break
         end
       end
     end
@@ -107,7 +124,7 @@ class ReadingListsController < ApplicationController
         format.html { redirect_to @reading_list, :notice => 'Reading list was successfully updated.' }
         format.json { head :no_content }
       else
-        error_msg = 'Unexpected error while creating reading list.'
+        error_msg = 'Unexpected error while updating reading list.'
         if @reading_list.errors.messages.count > 0
           error_msg = 'Following error(s) prevented the reading list from being saved: '
           multiple = false

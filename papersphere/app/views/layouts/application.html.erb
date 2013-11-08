@@ -52,11 +52,11 @@
     
   </nav>
 
-  <div id="notice-box" class="alert alert-info alert-dismissable <%= notice.present? ? '' : 'hidden' %>">
+  <div id="notice-box" class="page-top-alert alert alert-info alert-dismissable <%= notice.present? ? '' : 'hidden' %>">
     <button type="button" class="close" aria-hidden="true">&times;</button>
     <p id="notice-text" class="notice-text"><%= notice %></p>
   </div>
-  <div id="danger-box" class="alert alert-danger alert-dismissable <%= alert.present? ? '' : 'hidden' %>">
+  <div id="danger-box" class="page-top-alert alert alert-danger alert-dismissable <%= alert.present? ? '' : 'hidden' %>">
     <button type="button" class="close" aria-hidden="true">&times;</button>
     <p id="danger-text" class="alert-text"><%= alert %></p>
   </div>

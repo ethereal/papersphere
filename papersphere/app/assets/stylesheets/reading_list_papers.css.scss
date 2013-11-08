@@ -11,7 +11,6 @@
 
 .btn.btn-primary.full-paper-btn {
   margin-bottom: 1em;
-  float: right;
 }
 
 .reading-list-paper-panel .panel-heading {
@@ -75,4 +74,10 @@ form.rating_ballot {
   label.rating.glow {
     background-image: url(star_glow.png);
   }
+}
+
+.paper-info-header {
+  width: 150px;
+  text-align: right;
+  font-weight: bolder;
 }

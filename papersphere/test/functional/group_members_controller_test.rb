@@ -66,6 +66,6 @@ class GroupMembersControllerTest < ActionController::TestCase
       delete :destroy, id: @group_member
     end
 
-    assert_redirected_to group_members_path
+    assert_redirected_to group_path(@group_member.group)
   end
 end
