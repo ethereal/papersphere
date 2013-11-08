@@ -13,7 +13,7 @@ class RatingsControllerTest < ActionController::TestCase
     assert_response :success
     
     actual_rating = assigns(:rating)
-    assert_equal reading_list_papers(:one), actual_rating.reading_list_paper
+    assert_equal reading_list_papers(:two), actual_rating.reading_list_paper
     assert_equal users(:alice), actual_rating.user
     assert_equal 5, actual_rating.value
   end
@@ -22,10 +22,10 @@ class RatingsControllerTest < ActionController::TestCase
     assert_difference "Rating.count", 1 do
       post :create, create_params
     end
-    assert_redirected_to reading_list_paper_path reading_list_papers(:one)
+    assert_redirected_to reading_list_paper_path reading_list_papers(:two)
 
     actual_rating = assigns(:rating)    
-    assert_equal reading_list_papers(:one), actual_rating.reading_list_paper
+    assert_equal reading_list_papers(:two), actual_rating.reading_list_paper
     assert_equal users(:alice), actual_rating.user
     assert_equal 5, actual_rating.value
   end
@@ -52,9 +52,10 @@ class RatingsControllerTest < ActionController::TestCase
   
   def create_params
     {
-      reading_list_paper_id: reading_list_papers(:one).id,
-      rating: {
-        value: 5
+      :reading_list_paper_id => reading_list_papers(:two).id,
+      :user_id => users(:alice).id,
+      :rating => {
+        :value => 5
       }
     }
   end
