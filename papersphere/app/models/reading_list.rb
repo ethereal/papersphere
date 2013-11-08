@@ -7,6 +7,10 @@ class ReadingList < ActiveRecord::Base
   attr_accessible :name
 
   validates :name, :presence => true
+
+  TXN_INCOMPLETE = :rl_txn_incomplete
+  TXN_PAPER_ALREADY_IN_READING_LIST = :rl_txn_paper_in_list
+  TXN_SUCCESSFUL = :rl_txn_success
   
   def has_group(my_group)
     groups.each { |group|
@@ -24,6 +28,33 @@ class ReadingList < ActiveRecord::Base
       end
     end
     false
+  end
+
+  def add_paper(paper)
+    status = TXN_INCOMPLETE
+    transaction do
+      self.papers.each do |p|
+        if p.paper_code == paper.paper_code
+          status = TXN_PAPER_ALREADY_IN_READING_LIST
+          raise ActiveRecord::Rollback
+        end
+      end
+
+      existing_paper = Paper.find_by_paper_code(paper.paper_code)
+      if existing_paper.nil?
+        paper.save!
+      else
+        paper = existing_paper
+      end
+
+      reading_list_paper = ReadingListPaper.new
+      reading_list_paper.paper = paper
+      reading_list_paper.reading_list = self
+      reading_list_paper.save!
+      status = TXN_SUCCESSFUL
+    end
+
+    status
   end
 
 end

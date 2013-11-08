@@ -2,7 +2,7 @@ class ReadingListsController < ApplicationController
   # GET /reading_lists
   # GET /reading_lists.json
   def index
-    @reading_lists = current_user.reading_lists
+    @reading_lists = ReadingList.find_all_by_user_id(current_user)
     @reading_list = ReadingList.new
     @shared_lists = ReadingListsHelper::get_shared_lists(current_user)
 

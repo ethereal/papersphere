@@ -48,10 +48,11 @@ class ReadingListPapersController < ApplicationController
   # POST /reading_list_papers.json
   def create
     @reading_list = ReadingList.find(params[:reading_list_id])
+
     if not ReadingListsHelper::has_access(@reading_list, current_user, ReadingListsHelper::READWRITE)
       @paper_mgt_notification = 'User not authorized.'
       respond_to do |format|
-        format.html { redirect_to @reading_list, notice: @paper_mgt_notification }
+        format.html { redirect_to @reading_list, :alert => @paper_mgt_notification }
         format.js {}
       end
       return
@@ -60,33 +61,31 @@ class ReadingListPapersController < ApplicationController
     @is_owner = @reading_list.user == current_user
     @has_modify_rights = true
     
-    paper = Paper.new
-    paper.title = params[:paper_title]
-    paper.author = params[:paper_authors]
-    paper.publication = params[:paper_publication]
-    paper.year = params[:paper_year]
-    paper.url = params[:paper_url]
-    paper.paper_code = params[:paper_code]
+    @paper = Paper.new
+    @paper.title = params[:paper_title]
+    @paper.author = params[:paper_authors]
+    @paper.publication = params[:paper_publication]
+    @paper.year = params[:paper_year]
+    @paper.url = params[:paper_url]
+    @paper.paper_code = params[:paper_code]
 
     @reading_list_paper = ReadingListPaper.new
     @success = false
     begin
-      result = @reading_list_paper.add_paper_to_reading_list(paper, params[:reading_list_id])
-      if result == ReadingListPaper::TXN_SUCCESSFUL
-        @paper_mgt_notification = "Paper titled '#{paper.title}' was added to the list successfully."
+      result = @reading_list.add_paper(@paper)
+      if result == ReadingList::TXN_SUCCESSFUL
+        @paper_mgt_notification = "Paper titled '#{@paper.title}' was added to the list successfully."
         @success = true
-      elsif result == ReadingListPaper::TXN_INVALID_READING_LIST
-        @paper_mgt_notification = "Invalid reading list ID: #{params[:reading_list_id]}"
-      elsif result == ReadingListPaper::TXN_PAPER_ALREADY_IN_READING_LIST
-        @paper_mgt_notification = "Paper '#{paper.title}' already exists in the list."
+      elsif result == ReadingList::TXN_PAPER_ALREADY_IN_READING_LIST
+        @paper_mgt_notification = "Paper '#{@paper.title}' already exists in the list."
       else
-        @paper_mgt_notification = "Unexpected error while adding paper '#{paper.title}' to the list"
+        @paper_mgt_notification = "Unexpected error while adding paper '#{@paper.title}' to the list"
       end
     rescue Exception => ex
       @paper_mgt_notification = "Error while adding paper to reading list: #{ex.message}"
     end
 
-    @reading_list = ReadingList.find(params[:reading_list_id])
+    @reading_list.reload
 
     respond_to do |format|
       format.js
