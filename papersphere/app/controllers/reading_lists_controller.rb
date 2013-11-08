@@ -15,7 +15,7 @@ class ReadingListsController < ApplicationController
   # GET /reading_lists/1
   # GET /reading_lists/1.json
   def show
-    @reading_list = ReadingList.find(params[:id])
+    @reading_list = ReadingList.includes(:papers).find(params[:id])
     if not ReadingListsHelper::has_access(@reading_list, current_user, ReadingListsHelper::READONLY)
       @paper_mgt_notification = 'User not authorized.'
       respond_to do |format|
