@@ -6,13 +6,13 @@ module ReadingListsHelper
   NONE = :access_none
 
   def self.get_shared_lists(user)
-    result = []
+    return [] if user.groups.empty?
+    
+    group_ids = []
     user.groups.each do |group|
-      group.reading_lists.each do |reading_list|
-        result << reading_list
-      end
-    end
-    result
+      group_ids << group.id
+    end    
+    ReadingList.find_by_sql("SELECT `reading_lists`.* FROM `reading_lists` INNER JOIN `reading_list_shares` ON `reading_lists`.`id` = `reading_list_shares`.`reading_list_id` WHERE `reading_list_shares`.`group_id` IN (#{group_ids.join(',')})")
   end
   
   def self.has_access(reading_list, user, requested_access_rights)
