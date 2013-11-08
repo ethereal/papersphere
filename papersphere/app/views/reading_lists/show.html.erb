@@ -21,60 +21,64 @@
     </div>
 </div>
 <div class="row">
-    <div class="col-md-4">
-        <div class="panel panel-primary">
-            <div class="panel-heading">Search for Papers</div>
-            <div class="panel-body">
-                <%= form_tag({:action => 'search', :controller => 'remote_library'}, :remote => true, :class => 'form' , :'data-update-target' => 'update-container') do %>
-                    <label for="query">Search</label>
-                    <div class="form-inline">
-                        <div class="form-group">
-                            <%= text_field_tag 'query', nil, :class => 'form-control', :placeholder => 'Keywords'  %>
+    <% if @has_modify_rights %>
+        <div class="col-md-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Search for Papers</div>
+                <div class="panel-body">
+                    <%= form_tag({:action => 'search', :controller => 'remote_library'}, :remote => true, :class => 'form' , :'data-update-target' => 'update-container') do %>
+                        <label for="query">Search</label>
+                        <div class="form-inline">
+                            <div class="form-group">
+                                <%= text_field_tag 'query', nil, :class => 'form-control', :placeholder => 'Keywords'  %>
+                            </div>
+                            <div class="form-group">
+                                <label class="radio">
+                                    <%= radio_button_tag 'db', 'acm', true %> ACM
+                                </label>
+                                <label class="radio">
+                                    <%= radio_button_tag 'db', 'ieee' %> IEEE
+                                </label>
+                            </div>
+                            <%= submit_tag 'Go', :disable_with => 'Searching...', :class => 'btn btn-primary', :onclick => 'submit_search_form()' %>
                         </div>
-                        <div class="form-group">
-                            <label class="radio">
-                                <%= radio_button_tag 'db', 'acm', true %> ACM
-                            </label>
-                            <label class="radio">
-                                <%= radio_button_tag 'db', 'ieee' %> IEEE
-                            </label>
-                        </div>
-                        <%= submit_tag 'Go', :disable_with => 'Searching...', :class => 'btn btn-primary', :onclick => 'submit_search_form()' %>
-                    </div>
-                    <%= hidden_field_tag 'reading_list_id', @reading_list.id %>
-                <% end %>
+                        <%= hidden_field_tag 'reading_list_id', @reading_list.id %>
+                    <% end %>
+                </div>
             </div>
         </div>
-    </div>
-    <%= render 'form', :form_title => 'Rename Reading List' %>
-    <div class="col-md-4">
-        <div class="panel panel-primary">
-            <div class="panel-heading">Sharing</div>
-            <div class="panel-body">
-                <% if current_user.owned_groups.count > 0 %>
-                    <%= render :partial => 'reading_list_shares' %>
-                    <% if @reading_list.user == current_user %>
-                        <div class="form form-inline">
-                        <%= form_for @reading_list_share do |f| %>
-                            <% options = [] %>
-                            <% current_user.owned_groups.each do |g| options << [g.name, g.id] end %>
-                            <%= f.select :group_id, options_for_select(options), {}, :class => 'form-control' %>
-                            <% options = [["Read & Write", "readwrite"], ["Read Only", "readonly"], ["None", "none"]] %>
-                            <%= f.select :access_rights, options_for_select(options), {}, :class => 'form-control' %>
-                            <%= f.hidden_field :reading_list_id, :value => @reading_list.id %>
-                            <%= f.submit 'Share', :class => 'btn btn-primary' %>
+    <% end %>
+    <% if @is_owner %>
+        <%= render 'form', :form_title => 'Rename Reading List' %>
+        <div class="col-md-4">
+            <div class="panel panel-primary">
+                <div class="panel-heading">Sharing</div>
+                <div class="panel-body">
+                    <% if current_user.owned_groups.count > 0 %>
+                        <%= render :partial => 'reading_list_shares' %>
+                        <% if @reading_list.user == current_user %>
+                            <div class="form form-inline">
+                            <%= form_for @reading_list_share do |f| %>
+                                <% options = [] %>
+                                <% current_user.owned_groups.each do |g| options << [g.name, g.id] end %>
+                                <%= f.select :group_id, options_for_select(options), {}, :class => 'form-control' %>
+                                <% options = [["Read & Write", "readwrite"], ["Read Only", "readonly"], ["None", "none"]] %>
+                                <%= f.select :access_rights, options_for_select(options), {}, :class => 'form-control' %>
+                                <%= f.hidden_field :reading_list_id, :value => @reading_list.id %>
+                                <%= f.submit 'Share', :class => 'btn btn-primary' %>
+                            <% end %>
+                            </div>
                         <% end %>
+                    <% else %>
+                        <div class="alert alert-info">
+                            You do not have any groups to share with. Click on 'My Groups' to start
+                            creating groups.
                         </div>
                     <% end %>
-                <% else %>
-                    <div class="alert alert-info">
-                        You do not have any groups to share with. Click on 'My Groups' to start
-                        creating groups.
-                    </div>
-                <% end %>
+                </div>
             </div>
         </div>
-    </div>
+    <% end %>
 </div>
 <div class="row">
     <div class="col-md-12">

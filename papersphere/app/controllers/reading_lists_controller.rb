@@ -19,9 +19,19 @@ class ReadingListsController < ApplicationController
     if not ReadingListsHelper::has_access(@reading_list, current_user, ReadingListsHelper::READONLY)
       @paper_mgt_notification = 'User not authorized.'
       respond_to do |format|
-        format.html { redirect_to current_user.reading_lists, notice: @paper_mgt_notification }
+        format.html { redirect_to current_user.reading_lists, alert: @paper_mgt_notification }
       end
       return
+    end
+
+    @is_owner = false
+    @has_modify_rights = false
+    rights = ReadingListsHelper::get_shared_list_access_rights(@reading_list, current_user)
+    if rights == ReadingListsHelper::OWNER
+      @is_owner = true
+      @has_modify_rights = true
+    elsif rights == ReadingListsHelper::READWRITE
+      @has_modify_rights = true
     end
 
     @reading_list_share = ReadingListShare.new
