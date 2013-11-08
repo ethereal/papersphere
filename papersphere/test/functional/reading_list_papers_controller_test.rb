@@ -22,6 +22,7 @@ class ReadingListPapersControllerTest < ActionController::TestCase
   test "should create reading_list_paper" do
     reading_list = ReadingList.find(@reading_list_paper.reading_list_id)
     before_papers = reading_list.papers.count
+    assert_equal reading_list.papers.count, reading_list.paper_count
 
     assert_difference('ReadingListPaper.count') do
       xhr :post, :create, {
@@ -40,6 +41,7 @@ class ReadingListPapersControllerTest < ActionController::TestCase
 
     reading_list.reload
     assert_equal 1, reading_list.papers.count - before_papers
+    assert_equal reading_list.papers.count, reading_list.paper_count
   end
 
   test "should not add same paper twice to a list" do
@@ -77,6 +79,7 @@ class ReadingListPapersControllerTest < ActionController::TestCase
   test "should show reading_list_paper" do
     get :show, id: @reading_list_paper
     assert_response :success
+    assert_equal @reading_list_paper.reading_list.papers.count, @reading_list_paper.reading_list.paper_count
   end
 
   test "should destroy reading_list_paper" do
@@ -84,6 +87,7 @@ class ReadingListPapersControllerTest < ActionController::TestCase
       delete :destroy, id: @reading_list_paper
     end
 
+    assert_equal @reading_list_paper.reading_list.papers.count, @reading_list_paper.reading_list.paper_count
     assert_redirected_to reading_list_papers_path
   end
 end

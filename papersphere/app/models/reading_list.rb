@@ -4,7 +4,7 @@ class ReadingList < ActiveRecord::Base
   has_many :papers, :through => :reading_list_papers
   has_many :reading_list_shares, :dependent => :destroy
   has_many :groups, :through => :reading_list_shares
-  attr_accessible :name
+  attr_accessible :name, :paper_count
 
   validates :name, :presence => true
 
@@ -51,9 +51,21 @@ class ReadingList < ActiveRecord::Base
       reading_list_paper.paper = paper
       reading_list_paper.reading_list = self
       reading_list_paper.save!
+
+      self.update_attributes!(:paper_count => self.paper_count + 1)
       status = TXN_SUCCESSFUL
     end
 
+    status
+  end
+
+  def remove_paper(reading_list_paper)
+    status = TXN_INCOMPLETE
+    transaction do
+      reading_list_paper.destroy
+      self.update_attributes!(:paper_count => self.paper_count - 1)
+      status = TXN_SUCCESSFUL
+    end
     status
   end
 

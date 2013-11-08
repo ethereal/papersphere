@@ -3,7 +3,9 @@
 one:
   name: Reading List One
   user: alice
+  paper_count: 2
 
 two:
   name: MyString
   user: bob
+  paper_count: 0

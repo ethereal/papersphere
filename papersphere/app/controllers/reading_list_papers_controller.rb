@@ -100,13 +100,13 @@ class ReadingListPapersController < ApplicationController
     if not ReadingListsHelper::has_access(@reading_list, current_user, ReadingListsHelper::READWRITE)
       @paper_mgt_notification = 'User not authorized.'
       respond_to do |format|
-        format.html { redirect_to @reading_list, notice: @paper_mgt_notification }
+        format.html { redirect_to @reading_list, :alert => @paper_mgt_notification }
         format.js {}
       end
       return
     end
 
-    @reading_list_paper.destroy
+    @reading_list.remove_paper(@reading_list_paper)
 
     respond_to do |format|
       format.html { redirect_to reading_list_papers_url }
@@ -116,6 +116,7 @@ class ReadingListPapersController < ApplicationController
 
   def remove_paper_from_list
     @reading_list = ReadingList.find(params[:reading_list_id])
+
     if not ReadingListsHelper::has_access(@reading_list, current_user, ReadingListsHelper::READWRITE)
       @paper_mgt_notification = 'User not authorized.'
       respond_to do |format|
@@ -136,14 +137,14 @@ class ReadingListPapersController < ApplicationController
     @success = false
     if !@reading_list_paper.nil?
       title = @reading_list_paper.paper.title
-      @reading_list_paper.destroy
+      @reading_list.remove_paper(@reading_list_paper)
       @success = true
       @paper_mgt_notification = "Successfully removed the paper '#{title}' from the list."
     else
       @paper_mgt_notification = 'Failed to locate the specified paper in the database.'
     end
 
-    @reading_list = ReadingList.find(params[:reading_list_id])
+    @reading_list.reload
     respond_to do |format|
       format.js
     end
