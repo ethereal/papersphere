@@ -30,20 +30,9 @@ list1 = ReadingList.create(:name => 'MAE Reading List')
 list1.user = user1
 list1.save
 
-list_item1 = ReadingListPaper.create
-list_item1.reading_list = list
-list_item1.paper = paper1
-list_item1.save
-
-list_item2 = ReadingListPaper.create
-list_item2.reading_list = list
-list_item2.paper = paper2
-list_item2.save
-
-list_item3 = ReadingListPaper.create
-list_item3.reading_list = list
-list_item3.paper = paper3
-list_item3.save
+list.add_paper(paper1)
+list.add_paper(paper2)
+list.add_paper(paper3)
 
 group1 = Group.create(:name => 'My Project Team')
 group1.owner = user
