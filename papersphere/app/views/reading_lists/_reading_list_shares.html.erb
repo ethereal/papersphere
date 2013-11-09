@@ -6,7 +6,7 @@
                 <td><%= link_to share.group.name , group_path(share.group, :from_reading_list => @reading_list.id) %>
                 <td><%= share.access_rights %></td>
                 <% if @reading_list.user == current_user %>
-                  <td><%= link_to 'Destroy', share, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+                  <td><%= link_to 'Unshare', share, method: :delete, data: { confirm: 'Are you sure?' } %></td>
                 <% end %>
            </tr>
         <% end %>
