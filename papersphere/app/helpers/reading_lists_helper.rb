@@ -76,4 +76,15 @@ module ReadingListsHelper
     return NONE
   end
 
+  def self.get_unshared_groups(reading_list, owned_groups)
+    result = []
+    shared_groups = reading_list.groups.all
+    owned_groups.each do |group|
+      unless shared_groups.include? group
+        result << group
+      end
+    end
+    result
+  end
+
 end

@@ -62,21 +62,23 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">Sharing</div>
                 <div class="panel-body">
-                    <% if current_user.owned_groups.count > 0 %>
+                    <% owned_groups = current_user.owned_groups.all %>
+                    <% if owned_groups.length > 0 %>
                         <%= render :partial => 'reading_list_shares' %>
-                        <% if @reading_list.user == current_user %>
-                            <div class="form form-inline">
-                            <%= form_for @reading_list_share do |f| %>
-                                <% options = [] %>
-                                <% current_user.owned_groups.each do |g| options << [g.name, g.id] end %>
-                                <%= f.select :group_id, options_for_select(options), {}, :class => 'form-control' %>
-                                <% options = [["Read & Write", "readwrite"], ["Read Only", "readonly"]] %>
-                                <%= f.select :access_rights, options_for_select(options), {}, :class => 'form-control' %>
-                                <%= f.hidden_field :reading_list_id, :value => @reading_list.id %>
-                                <%= f.submit 'Share', :class => 'btn btn-primary' %>
+                        <div class="form form-inline">
+                            <% remaining_groups = ReadingListsHelper::get_unshared_groups(@reading_list, owned_groups) %>
+                            <% if remaining_groups.length > 0 %>
+                                <%= form_for @reading_list_share do |f| %>
+                                    <% options = [] %>
+                                    <% remaining_groups.each do |g| options << [g.name, g.id] end %>
+                                    <%= f.select :group_id, options_for_select(options), {}, :class => 'form-control' %>
+                                    <% options = [["Read & Write", "readwrite"], ["Read Only", "readonly"]] %>
+                                    <%= f.select :access_rights, options_for_select(options), {}, :class => 'form-control' %>
+                                    <%= f.hidden_field :reading_list_id, :value => @reading_list.id %>
+                                    <%= f.submit 'Share', :class => 'btn btn-primary' %>
+                                <% end %>
                             <% end %>
-                            </div>
-                        <% end %>
+                        </div>
                     <% else %>
                         <div class="alert alert-info">
                             You do not have any groups to share with. Click on 'My Groups' to start
