@@ -191,29 +191,51 @@ NUM_USERS.times do |i|
     
     num_reading_list_papers = rand(1..MAX_READING_LIST_PAPERS_PER_READING_LIST)
     num_reading_list_papers.times do |i_rlp|
-      reading_list_paper = ReadingListPaper.new
-      reading_list_paper.reading_list = reading_list
-      reading_list_paper.paper = Paper.find_by_paper_code("#{rand(0..999)}")
-      reading_list_paper.save!
-      
-      num_comments = rand(1..MAX_FEEDBACK_PER_READING_LIST_PAPER)
-      num_comments.times do |i_c|
-        comment = Comment.new(:text => "Comment ##{i_c}")
-        comment.author = User.find_by_email("test#{rand(0..i)}@email.com")
-        comment.reading_list_paper = reading_list_paper
-        comment.save!
-      end
-      
-      num_ratings = rand(1..MAX_FEEDBACK_PER_READING_LIST_PAPER)
-      num_ratings.times do |i_r|
-        rating = Rating.new(:value => rand(1..5))
-        rating.user = User.find_by_email("test#{rand(0..i)}@email.com")
-        rating.reading_list_paper = reading_list_paper
-        rating.save!
-      end
-      
-      reading_list_paper.save!
+      reading_list.add_paper(Paper.find_by_paper_code("#{rand(0..999)}"))
     end
+    
+    reading_list.reading_list_papers.each do |rlp|
+      num_comments = rand(1..MAX_FEEDBACK_PER_READING_LIST_PAPER)
+       num_comments.times do |i_c|
+         comment = Comment.new(:text => "Comment ##{i_c}")
+         comment.author = User.find_by_email("test#{rand(0..i)}@email.com")
+         comment.reading_list_paper = rlp
+         comment.save!
+       end
+       
+       num_ratings = rand(1..MAX_FEEDBACK_PER_READING_LIST_PAPER)
+       num_ratings.times do |i_r|
+         rating = Rating.new(:value => rand(1..5))
+         rating.user = User.find_by_email("test#{rand(0..i)}@email.com")
+         rating.reading_list_paper = rlp
+         rating.save!
+       end
+    end
+   
+    # num_reading_list_papers.times do |i_rlp|
+    #   reading_list_paper = ReadingListPaper.new
+    #   reading_list_paper.reading_list = reading_list
+    #   reading_list_paper.paper = 
+    #   reading_list_paper.save!
+    #   
+    #   num_comments = rand(1..MAX_FEEDBACK_PER_READING_LIST_PAPER)
+    #   num_comments.times do |i_c|
+    #     comment = Comment.new(:text => "Comment ##{i_c}")
+    #     comment.author = User.find_by_email("test#{rand(0..i)}@email.com")
+    #     comment.reading_list_paper = reading_list_paper
+    #     comment.save!
+    #   end
+    #   
+    #   num_ratings = rand(1..MAX_FEEDBACK_PER_READING_LIST_PAPER)
+    #   num_ratings.times do |i_r|
+    #     rating = Rating.new(:value => rand(1..5))
+    #     rating.user = User.find_by_email("test#{rand(0..i)}@email.com")
+    #     rating.reading_list_paper = reading_list_paper
+    #     rating.save!
+    #   end
+    #   
+    #   reading_list_paper.save!
+    # end
     
     reading_list.save!
   end
@@ -264,5 +286,10 @@ Group.all.each do |group|
   group.save!
 end
 
-
+# USERS 100k
+# RLIST 50 per USER
+# SHARES 50 per RLIST
+# PAPER 100 per RLIST
+# COMMENT 100 per PAPER
+# same for RATING
 
