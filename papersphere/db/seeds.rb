@@ -152,138 +152,150 @@
 #########################
 # New test data here
 #########################
-NUM_USERS = 10000
-NUM_PAPERS = 10000
+FACTOR = 100000
 
-MAX_READING_LISTS_PER_USER = 10
+NUM_USERS = 1 * FACTOR
+NUM_PAPERS = 1 * FACTOR
+
+NUM_READING_LISTS = 5 * FACTOR
+
+NUM_GROUPS = 5 * FACTOR
+NUM_READING_LIST_SHARES = 10 * FACTOR
+
+NUM_FEEDBACK = 10 * FACTOR
+
 MAX_READING_LIST_PAPERS_PER_READING_LIST = 10
-MAX_FEEDBACK_PER_READING_LIST_PAPER = 10
-
-MAX_GROUPS_PER_USER = 10
 MAX_GROUP_MEMBERS_PER_GROUP = 10
 
 ASSIGNABLE_ACCESS_RIGHTS = ['readwrite', 'readonly']
 
-NUM_PAPERS.times do |i|
-  Paper.create(
-    title: "Paper #{i}",
-    author: "Author #{i}",
-    year: "#{i}",
-    publication: "Conference #{i}",
-    paper_code: "#{i}"
-  )
+papers = []
+Paper.transaction do
+  NUM_PAPERS.times do |i|
+    p = Paper.create(
+      title: "Paper #{i}",
+      author: "Author #{i}",
+      year: "#{i}",
+      publication: "Conference #{i}",
+      paper_code: "#{i}"
+    )
+    papers << p
+  end
 end
 
-NUM_USERS.times do |i|
-  user = User.create(
-    email: "test#{i}@email.com",
-    password: 'test1234',
-    password_confirmation: 'test1234',
-    name: "Test #{i}"
-  )
-  user.save!
-  
-  num_reading_lists = rand(1..MAX_READING_LISTS_PER_USER)
-  num_reading_lists.times do |i_rl|
-    reading_list = ReadingList.new(:name => "Reading List #{i_rl}")
-    reading_list.user = user
-    reading_list.save!
-    
-    num_reading_list_papers = rand(1..MAX_READING_LIST_PAPERS_PER_READING_LIST)
-    num_reading_list_papers.times do |i_rlp|
-      reading_list.add_paper(Paper.find_by_paper_code("#{rand(0..999)}"))
-    end
-    
-    reading_list.reading_list_papers.each do |rlp|
-      num_comments = rand(1..MAX_FEEDBACK_PER_READING_LIST_PAPER)
-       num_comments.times do |i_c|
-         comment = Comment.new(:text => "Comment ##{i_c}")
-         comment.author = User.find_by_email("test#{rand(0..i)}@email.com")
-         comment.reading_list_paper = rlp
-         comment.save!
-       end
-       
-       num_ratings = rand(1..MAX_FEEDBACK_PER_READING_LIST_PAPER)
-       num_ratings.times do |i_r|
-         rating = Rating.new(:value => rand(1..5))
-         rating.user = User.find_by_email("test#{rand(0..i)}@email.com")
-         rating.reading_list_paper = rlp
-         rating.save!
-       end
-    end
-   
-    # num_reading_list_papers.times do |i_rlp|
-    #   reading_list_paper = ReadingListPaper.new
-    #   reading_list_paper.reading_list = reading_list
-    #   reading_list_paper.paper = 
-    #   reading_list_paper.save!
-    #   
-    #   num_comments = rand(1..MAX_FEEDBACK_PER_READING_LIST_PAPER)
-    #   num_comments.times do |i_c|
-    #     comment = Comment.new(:text => "Comment ##{i_c}")
-    #     comment.author = User.find_by_email("test#{rand(0..i)}@email.com")
-    #     comment.reading_list_paper = reading_list_paper
-    #     comment.save!
-    #   end
-    #   
-    #   num_ratings = rand(1..MAX_FEEDBACK_PER_READING_LIST_PAPER)
-    #   num_ratings.times do |i_r|
-    #     rating = Rating.new(:value => rand(1..5))
-    #     rating.user = User.find_by_email("test#{rand(0..i)}@email.com")
-    #     rating.reading_list_paper = reading_list_paper
-    #     rating.save!
-    #   end
-    #   
-    #   reading_list_paper.save!
-    # end
-    
-    reading_list.save!
+users = []
+User.transaction do
+  NUM_USERS.times do |i|
+    user = User.new(
+      email: "test#{i}@email.com",
+      name: "Test #{i}"
+    )
+    user.encrypted_password = '$2a$10$neifx2jbggboRNWjYB6S0us6mScL7jhV8cZ8g7I0pizSYr9tsWabq'
+    user.save!(:validate => false)
+    users << user
   end
-  
-  num_groups = rand(1..MAX_GROUPS_PER_USER)
-  num_groups.times do |i_g|
+end
+
+reading_lists = []
+ReadingList.transaction do
+  NUM_READING_LISTS.times do |i_rl|
+    reading_list = ReadingList.new(:name => "Reading List #{i_rl}", :paper_count => rand(1..MAX_READING_LIST_PAPERS_PER_READING_LIST))
+    reading_list.user_id = users.sample.id
+    reading_list.save!(:validate => false)
+    reading_lists << reading_list
+  end
+end
+
+def random_subset_of(array, size)
+  result = []
+  indecies = []
+  while result.length < size
+    index = rand(0..array.length-1)
+    unless indecies.include? index
+      indecies << index
+      result << array[index]
+    end
+  end
+  result
+end
+
+reading_list_papers = []
+ReadingListPaper.transaction do 
+  reading_lists.each do |rl|
+    num_reading_list_papers = rl.paper_count
+    papers_to_add = random_subset_of(papers, num_reading_list_papers)
+    papers_to_add.each do |p|
+      rlp = ReadingListPaper.new
+      rlp.paper_id = p.id
+      rlp.reading_list_id = rl.id
+      rlp.save!(:validate => false)
+      reading_list_papers << rlp
+    end
+  end
+end
+
+Comment.transaction do
+  NUM_FEEDBACK.times do |i_c|
+    comment = Comment.new(:text => "Comment ##{i_c}")
+    comment.author_id = users.sample.id
+    comment.reading_list_paper_id = reading_list_papers.sample.id
+    comment.save!(:validate => false)
+  end
+end
+
+Rating.transaction do
+  NUM_FEEDBACK.times do |i_c|
+    rating = Rating.new(:value => rand(1..5))
+    rating.user_id = users.sample.id
+    rating.reading_list_paper_id = reading_list_papers.sample.id
+    rating.save!(:validate => false)
+  end
+end
+
+groups_hash = {}
+groups = []
+Group.transaction do
+  NUM_GROUPS.times do |i_g|
     group = Group.new(:name => "Group #{i_g}")
-    group.owner = user
-    users_reading_lists = ReadingList.where(:user_id => user.id)
-    groups_reading_list_shares = []
-    
-    num_reading_lists_in_group = rand(1..users_reading_lists.count)
-    num_reading_lists_in_group.times do
-      rl = users_reading_lists[rand(0..users_reading_lists.count-1)]
-      while groups_reading_list_shares.include? rl do
-        rl = users_reading_lists[rand(0..users_reading_lists.count-1)]
-      end
-      
-      rls = ReadingListShare.new(:access_rights => ASSIGNABLE_ACCESS_RIGHTS[rand(0..1)])
-      rls.reading_list = rl
-      rls.group = group
-      groups_reading_list_shares << rls
+    group.owner_id = users.sample.id
+    group.save!(:validate => false)
+    if groups_hash[group.owner_id].present?
+      groups_hash[group.owner_id] << group
+    else
+      groups_hash[group.owner_id] = [group]
     end
-    
-    group.reading_list_shares = groups_reading_list_shares
-    group.save!
+    groups << group
   end
-  
-  user.save!
 end
 
-Group.all.each do |group|
-  group.group_members ||= []
-  
-  num_group_members = rand(1..MAX_GROUP_MEMBERS_PER_GROUP)
-  num_group_members.times do
-    user = User.find_by_email("test#{rand(0..NUM_USERS-1)}@email.com")
-    while group.owner == user || group.group_members.include?(user) do
-      user = User.find_by_email("test#{rand(0..NUM_USERS-1)}@email.com")
+GroupMember.transaction do
+  groups.each do |g|
+    num_group_members = rand(1..MAX_GROUP_MEMBERS_PER_GROUP)
+    users_to_add = random_subset_of(users, num_group_members)
+    users_to_add.each do |u|
+      group_member = GroupMember.new
+      group_member.user_id = u.id
+      group_member.group_id = g.id
+      group_member.save!(:validate => false)
     end
-    group_member = GroupMember.new
-    group_member.user = user
-    group_member.group = group
-    
-    group.group_members << group_member
   end
-  
-  group.save!
+end
+
+ReadingListShare.transaction do
+  NUM_READING_LIST_SHARES.times do |i_rls|
+    groups_of_user = nil
+    reading_list_to_add = nil
+    until groups_of_user.present?
+      reading_list_to_add = reading_lists.sample
+      owner_id = reading_list_to_add.user_id
+      groups_of_user = groups_hash[owner_id]
+    end
+    group_to_share_with = groups_of_user.sample
+    rls = ReadingListShare.new(:access_rights => ASSIGNABLE_ACCESS_RIGHTS.sample)
+    rls.group_id = group_to_share_with.id
+    rls.reading_list_id = reading_list_to_add.id
+    rls.save!(:validate => false)
+  end
 end
 
 # USERS 100k
