@@ -1,6 +1,6 @@
 <div class="col-md-4">
     <div class="panel panel-primary">
-        <div class="panel-heading"><%= form_title %></div>
+        <div class="panel-heading" id="group-form"><%= form_title %></div>
         <div class="panel-body">
             <%= form_for(@group, :html => { :class => 'form-inline' }) do |f| %>
                 <% if @group.errors.any? %>

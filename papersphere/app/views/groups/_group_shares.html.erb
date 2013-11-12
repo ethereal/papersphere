@@ -9,8 +9,8 @@
                         <tr>
                             <th>Reading List</th>
                             <th>Access Rights</th>
-                        <tr>
-                            <% shared_lists.each do |share| %>
+                        </tr>
+                        <% shared_lists.each do |share| %>
                             <tr>
                                 <td><%= link_to share.reading_list.name , reading_list_path(share.reading_list, :from_group => @group.id) %></td>
                                 <td><%= share.access_rights %></td>
