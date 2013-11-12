@@ -25,7 +25,11 @@ class ReadingListPaper < ActiveRecord::Base
       value += rating.value
     end
     total = ratings.size
-    value.to_f / total.to_f
+    (value.to_f / total.to_f).round 3
+  end
+  
+  def global_rating
+    paper.average_rating
   end
   
 end

@@ -6,4 +6,13 @@ class Comment < ActiveRecord::Base
   
   validates_presence_of :text, :author, :reading_list_paper
   
+  def time_to_display
+    time = if updated_at > created_at
+             updated_at.in_time_zone
+           else
+             created_at.in_time_zone
+           end
+    time.strftime("%A, %B #{time.day.ordinalize} at %-I:%M%P")
+  end
+  
 end

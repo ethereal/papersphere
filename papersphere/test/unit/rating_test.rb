@@ -3,6 +3,8 @@ require 'test_helper'
 class RatingTest < ActiveSupport::TestCase
   
   def test_should_validate_presence_of
+    Rating.destroy_all
+    
     r = Rating.new
     r.value = nil
     r.user = nil
@@ -27,6 +29,17 @@ class RatingTest < ActiveSupport::TestCase
     assert_equal false, r.valid?
     assert_equal 1, r.errors.size
     assert_equal "is not included in the list", r.errors.first[1]
+  end
+  
+  def test_should_only_create_one_rating_per_user_per_reading_list_paper
+    saved_rating = ratings(:one)
+    new_rating = Rating.new(:value => 3)
+    new_rating.user = saved_rating.user
+    new_rating.reading_list_paper = saved_rating.reading_list_paper
+    
+    assert_equal false, new_rating.valid?
+    assert_equal 1, new_rating.errors.size
+    assert_equal "can only be created once per user, per reading list paper", new_rating.errors.first[1]
   end
   
 end

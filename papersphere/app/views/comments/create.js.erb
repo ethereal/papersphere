@@ -1,10 +1,10 @@
 <% if @comment.errors.empty? %>
   var commentsTable = $('.page-content').find('.comments-table');
-  if (commentsTable.size() == 0) {
-    $('#paper_comments').html("<%=j render 'comments', comments: @reading_list_paper.comments %>")
+  if (commentsTable.find('tbody tr').size() == 0) {
+    $('#paper_comments ').html("<%=j render @reading_list_paper.comments %>");
     $('#empty-table-msg').before().remove();
   } else {
-    $('.comments-table').prepend("<%=j render 'comment', comment: @reading_list_paper.comments.last %>");
+    commentsTable.find('tbody').prepend("<%=j render @comment %>");
   }
   $('.comment-form .comment-input').val('');
 <% else %>
