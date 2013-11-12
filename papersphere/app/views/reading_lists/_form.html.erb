@@ -1,6 +1,6 @@
 <div class="col-md-4">
     <div class="panel panel-primary">
-        <div class="panel-heading"><%= form_title %></div>
+        <div class="panel-heading" id="reading-list-form-heading"><%= form_title %></div>
         <div class="panel-body">
             <%= form_for(@reading_list, :html => { :class => 'form-inline' }) do |f| %>
                 <% if @reading_list.errors.any? %>

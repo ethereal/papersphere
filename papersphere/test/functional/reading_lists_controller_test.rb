@@ -110,4 +110,21 @@ class ReadingListsControllerTest < ActionController::TestCase
     assert_equal 1, count_before - @reading_list.paper_count
     assert_not_nil Paper.find_by_paper_code('TestPaperCode')
   end
+
+  test "should show reading_list form" do
+    get :index
+    assert_select "#reading-list-form-heading" do |elem|
+      assert_equal 1, elem.length
+      assert_equal 'Create Reading List', elem.first.children.first.content
+    end
+  end
+
+  test "should show rename reading_list form" do
+    get :show, id: @reading_list
+    assert_select "#reading-list-form-heading" do |elem|
+      assert_equal 1, elem.length
+      assert_equal 'Rename Reading List', elem.first.children.first.content
+    end
+  end
+
 end

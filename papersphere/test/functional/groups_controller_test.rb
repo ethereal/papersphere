@@ -44,7 +44,7 @@ class GroupsControllerTest < ActionController::TestCase
 
   test "should show add group form" do
     get :index
-    assert_select "#group-form" do |elem|
+    assert_select "#group-form-heading" do |elem|
       assert_equal 1, elem.length
       assert_equal 'Create New Group', elem.first.children.first.content
     end
@@ -52,7 +52,7 @@ class GroupsControllerTest < ActionController::TestCase
 
   test "should show rename group form" do
     get :show, id: @group
-    assert_select "#group-form" do |elem|
+    assert_select "#group-form-heading" do |elem|
       assert_equal 1, elem.length
       assert_equal 'Rename Group', elem.first.children.first.content
     end
