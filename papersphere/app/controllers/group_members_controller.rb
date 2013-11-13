@@ -60,7 +60,7 @@ class GroupMembersController < ApplicationController
         if @group_member.save
           message = "Successfully added #{member_email} to the group"
           Thread.new do
-            AddUserToGroupNotifier.added(@group_member.user, @group_member.group).deliver
+            AddUserToGroupNotifier.added(@group_member.user, @current_user.name).deliver
             ActiveRecord::Base.connection.close
           end
         end

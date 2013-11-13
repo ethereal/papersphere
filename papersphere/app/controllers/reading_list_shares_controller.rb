@@ -70,6 +70,11 @@ class ReadingListSharesController < ApplicationController
       
     respond_to do |format|
       if @reading_list_share.save
+      # notify list members  
+      Thread.new do         
+        ListSharedNotifier.shared(@current_user.first_name, @reading_list.name, group).deliver
+        ActiveRecord::Base.connection.close
+      end
         format.html { redirect_to @reading_list_share.reading_list, notice: 'Reading list share was successfully created.' }
         format.json { render json: @reading_list_share, status: :created, location: @reading_list_share }
       else

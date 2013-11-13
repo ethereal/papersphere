@@ -34,9 +34,52 @@
     <%= f.password_field :current_password, "class" => "form-control" %><br>
   </div>
 
-<div class ="text_area" rows="4" cols="5" ><%= f.label :description %>
-<%= f.text_area :description, :autofocus => true, "class" => "form-control", "size" => "100", "rows" => "4",  "cols" => "5" %><br>
-</div>
+  <div class ="text_area" rows="4" cols="5" ><%= f.label :description %>
+    <%= f.text_area :description, :autofocus => true, "class" => "form-control", "size" => "100", "rows" => "4",  "cols" => "5" %><br>
+  </div>
+
+   <div>
+ 
+  <div class="form-group">
+    <%= f.label :added_to_the_group %>
+    <p class="help-block">When someone adds me to the group.</p>
+  </div>
+  <div class="checkbox">
+    <label>
+      <%= f.check_box :added_to_group %> Notify me
+    </label>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :list_shared %>
+    <p class="help-block">When someone shares a list with me.</p>
+  </div>
+  <div class="checkbox">
+    <label>
+      <%= f.check_box :list_shared %> Notify me
+    </label>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :comment_added %>
+    <p class="help-block">When someone comments on some of my lists.</p>
+  </div>
+  <div class="checkbox">
+    <label>
+      <%= f.check_box :comment_added %> Notify me
+    </label>
+  </div>
+
+  <div class="form-group">
+    <%= f.label :paper_added %>
+    <p class="help-block">When someone adds a paper to one of my reading lists.</p>
+  </div>
+  <div class="checkbox">
+    <label>
+      <%= f.check_box :paper_added %> Notify me
+    </label>
+  </div><br>
+  </div>
 
   <div>
     <%= f.submit "Update", :class =>  'btn btn-primary' %><br><br>

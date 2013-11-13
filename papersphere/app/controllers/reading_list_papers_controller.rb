@@ -76,6 +76,7 @@ class ReadingListPapersController < ApplicationController
       if result == ReadingList::TXN_SUCCESSFUL
         @paper_mgt_notification = "Paper titled '#{@paper.title}' was added to the list successfully."
         @success = true
+
       elsif result == ReadingList::TXN_PAPER_ALREADY_IN_READING_LIST
         @paper_mgt_notification = "Paper '#{@paper.title}' already exists in the list."
       else
