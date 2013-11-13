@@ -56,9 +56,9 @@
       </tr>
       <tr>
       <td width="650">
-        <p>Dear <%= @user.first_name =%>, </p>
-        <p><%= @name =%> commented on the ** paper: </p>
-        <p>***</p>
+        <p>Dear <%= @member.user.first_name =%>, </p>
+        <p><%= @comment.author.first_name =%> commented on the &#34;<%= @comment.reading_list_paper.paper.title =%>&#34; paper:</p>
+        <p><%= @comment.text =%></p>
         <p>Happy sharing!</p>
       </td>
       <tr>

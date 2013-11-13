@@ -70,7 +70,7 @@ class ReadingListSharesController < ApplicationController
       
     respond_to do |format|
       if @reading_list_share.save
-      # notify list members  
+      # notify group members  
       Thread.new do         
         ListSharedNotifier.shared(@current_user.first_name, @reading_list.name, group).deliver
         ActiveRecord::Base.connection.close

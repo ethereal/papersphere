@@ -1,6 +1,6 @@
-Dear <%= @user.first_name =%>,
+Dear <%= @member.user.first_name =%>,
  
- <%= @name =%> commented on the ** paper:
- "***"
-
- Happy Sharing!
+<%= @comment.author.first_name =%> commented on the "<%= @comment.reading_list_paper.paper.title =%>" paper:
+<%= @comment.text =%>
+ 
+Happy Sharing!

@@ -10,14 +10,13 @@ class ListSharedNotifier < ActionMailer::Base
     @firstname = firstname
     @reading_list_name = reading_list_name
     @group = group
- logger.info "notifier before loop "
-    # send an email to each member of the reading list     
+    # send an email to each member of the group     
     @group.group_members.each { |member|
-      # if the user wants this notification
-     # if member.user.list_shared
+      #if the user wants this notification
+      if member.user.list_shared
         @member = member
         mail to: @member.user.email, subject: 'Reading list has been shared with you.' 
-   #   end
+      end
     }
   end
 end

@@ -11,6 +11,11 @@ class CommentsController < ApplicationController
       respond_to do |format|
         format.js
       end
+      # notify list members  
+       Thread.new do
+        CommentAddedNotifier.added(@comment).deliver
+        ActiveRecord::Base.connection.close
+      end
     end
   end
   

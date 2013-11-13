@@ -76,7 +76,11 @@ class ReadingListPapersController < ApplicationController
       if result == ReadingList::TXN_SUCCESSFUL
         @paper_mgt_notification = "Paper titled '#{@paper.title}' was added to the list successfully."
         @success = true
-
+        # notify list members  
+        Thread.new do
+          PaperAddedNotifier.added(@current_user.first_name, @paper.title, @reading_list).deliver
+          ActiveRecord::Base.connection.close
+        end
       elsif result == ReadingList::TXN_PAPER_ALREADY_IN_READING_LIST
         @paper_mgt_notification = "Paper '#{@paper.title}' already exists in the list."
       else
