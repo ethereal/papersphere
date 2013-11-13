@@ -19,4 +19,12 @@ namespace :setup do
     after 'setup:change_dir_structure', 'setup:create_database'
     before 'setup:create_database', 'rvm:hook'
     before 'setup:create_database', 'bundler:install'
+    
+    desc "Uploads SQL Dump"
+    task :upload_mysql_dump => ENV['PROD_SQL_DUMP'] do |t|
+      on roles(:all) do
+        upload!(t.prerequisites.first, "#{current_path}/mysql_dump.sql")
+        execute "mysql -uroot papersphere_production < #{current_path}/mysql_dump.sql"
+      end
+    end
 end
