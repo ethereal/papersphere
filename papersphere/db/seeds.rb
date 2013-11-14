@@ -169,7 +169,7 @@ MAX_GROUP_MEMBERS_PER_GROUP = 10
 
 ASSIGNABLE_ACCESS_RIGHTS = ['readwrite', 'readonly']
 
-papers = []
+paper_ids = []
 Paper.transaction do
   NUM_PAPERS.times do |i|
     p = Paper.create(
@@ -179,11 +179,11 @@ Paper.transaction do
       publication: "Conference #{i}",
       paper_code: "#{i}"
     )
-    papers << p
+    paper_ids << p.id
   end
 end
 
-users = []
+user_ids = []
 User.transaction do
   NUM_USERS.times do |i|
     user = User.new(
@@ -192,7 +192,7 @@ User.transaction do
     )
     user.encrypted_password = '$2a$10$neifx2jbggboRNWjYB6S0us6mScL7jhV8cZ8g7I0pizSYr9tsWabq'
     user.save!(:validate => false)
-    users << user
+    user_ids << user.id
   end
 end
 
@@ -200,7 +200,7 @@ reading_lists = []
 ReadingList.transaction do
   NUM_READING_LISTS.times do |i_rl|
     reading_list = ReadingList.new(:name => "Reading List #{i_rl}", :paper_count => rand(1..MAX_READING_LIST_PAPERS_PER_READING_LIST))
-    reading_list.user_id = users.sample.id
+    reading_list.user_id = user_ids.sample
     reading_list.save!(:validate => false)
     reading_lists << reading_list
   end
@@ -219,26 +219,28 @@ def random_subset_of(array, size)
   result
 end
 
-reading_list_papers = []
+reading_list_paper_ids = []
 ReadingListPaper.transaction do 
   reading_lists.each do |rl|
     num_reading_list_papers = rl.paper_count
-    papers_to_add = random_subset_of(papers, num_reading_list_papers)
-    papers_to_add.each do |p|
+    paper_ids_to_add = random_subset_of(paper_ids, num_reading_list_papers)
+    paper_ids_to_add.each do |pid|
       rlp = ReadingListPaper.new
-      rlp.paper_id = p.id
+      rlp.paper_id = pid
       rlp.reading_list_id = rl.id
       rlp.save!(:validate => false)
-      reading_list_papers << rlp
+      reading_list_paper_ids << rlp.id
     end
   end
 end
 
+paper_ids = nil
+
 Comment.transaction do
   NUM_FEEDBACK.times do |i_c|
     comment = Comment.new(:text => "Comment ##{i_c}")
-    comment.author_id = users.sample.id
-    comment.reading_list_paper_id = reading_list_papers.sample.id
+    comment.author_id = user_ids.sample
+    comment.reading_list_paper_id = reading_list_paper_ids.sample
     comment.save!(:validate => false)
   end
 end
@@ -246,18 +248,20 @@ end
 Rating.transaction do
   NUM_FEEDBACK.times do |i_c|
     rating = Rating.new(:value => rand(1..5))
-    rating.user_id = users.sample.id
-    rating.reading_list_paper_id = reading_list_papers.sample.id
+    rating.user_id = user_ids.sample
+    rating.reading_list_paper_id = reading_list_paper_ids.sample
     rating.save!(:validate => false)
   end
 end
+
+reading_list_paper_ids = nil
 
 groups_hash = {}
 groups = []
 Group.transaction do
   NUM_GROUPS.times do |i_g|
     group = Group.new(:name => "Group #{i_g}")
-    group.owner_id = users.sample.id
+    group.owner_id = user_ids.sample
     group.save!(:validate => false)
     if groups_hash[group.owner_id].present?
       groups_hash[group.owner_id] << group
@@ -271,15 +275,19 @@ end
 GroupMember.transaction do
   groups.each do |g|
     num_group_members = rand(1..MAX_GROUP_MEMBERS_PER_GROUP)
-    users_to_add = random_subset_of(users, num_group_members)
-    users_to_add.each do |u|
+    user_ids_to_add = random_subset_of(user_ids, num_group_members)
+    
+    user_ids_to_add.each do |uid|
       group_member = GroupMember.new
-      group_member.user_id = u.id
+      group_member.user_id = uid
       group_member.group_id = g.id
       group_member.save!(:validate => false)
     end
   end
 end
+
+user_ids = nil
+groups = nil
 
 ReadingListShare.transaction do
   NUM_READING_LIST_SHARES.times do |i_rls|
@@ -304,4 +312,3 @@ end
 # PAPER 100 per RLIST
 # COMMENT 100 per PAPER
 # same for RATING
-
