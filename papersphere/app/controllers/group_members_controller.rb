@@ -59,10 +59,7 @@ class GroupMembersController < ApplicationController
         @group_member.group = group
         if @group_member.save
           message = "Successfully added #{member_email} to the group"
-          Thread.new do
-            AddUserToGroupNotifier.added(@group_member.user, @current_user.name).deliver
-            ActiveRecord::Base.connection.close
-          end
+          AddUserToGroupNotifier.delay.added(@group_member.user, @current_user.name)
         end
       else
         message = "Group already contains the member #{member_email}"

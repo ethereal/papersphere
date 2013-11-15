@@ -12,10 +12,7 @@ class CommentsController < ApplicationController
         format.js
       end
       # notify list members  
-       Thread.new do
-        CommentAddedNotifier.added(@comment).deliver
-        ActiveRecord::Base.connection.close
-      end
+      CommentAddedNotifier.delay.added(@comment)
     end
   end
   
