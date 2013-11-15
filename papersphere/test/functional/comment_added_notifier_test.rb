@@ -2,11 +2,12 @@ require 'test_helper'
 
 class CommentAddedNotifierTest < ActionMailer::TestCase
   test "added" do
-    mail = CommentAddedNotifier.added
-    assert_equal "Added", mail.subject
-    assert_equal ["to@example.org"], mail.to
-    assert_equal ["from@example.com"], mail.from
-    assert_match "Hi", mail.body.encoded
+  	comment = comments(:one)
+  	user = users(:alice)
+    mail = CommentAddedNotifier.added(comment)
+   	assert_equal "New comment has been added.", mail.subject
+    assert_equal [user.email], mail.to
+    assert_equal ["papersphere2013@gmail.com"], mail.from
   end
 
 end

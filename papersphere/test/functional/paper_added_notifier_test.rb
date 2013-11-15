@@ -2,11 +2,10 @@ require 'test_helper'
 
 class PaperAddedNotifierTest < ActionMailer::TestCase
   test "added" do
-    mail = PaperAddedNotifier.added
-    assert_equal "Added", mail.subject
-    assert_equal ["to@example.org"], mail.to
-    assert_equal ["from@example.com"], mail.from
-    assert_match "Hi", mail.body.encoded
+  	reading_list = reading_lists(:one)
+    mail = PaperAddedNotifier.added('alice', 'title', reading_list)
+   	assert_equal "Paper has been added to your reading list.", mail.subject
+    assert_equal ["papersphere2013@gmail.com"], mail.from
   end
 
 end
