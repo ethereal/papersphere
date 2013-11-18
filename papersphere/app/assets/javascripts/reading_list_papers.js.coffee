@@ -46,7 +46,8 @@ $ ->
           for k,comment of data
             $('table.comments-table tbody').append comment
         else
-          loadCommentsButton.remove()
+          noMoreCommentsMessage = "<p>No more comments to load.</p>"
+          loadCommentsButton.replaceWith noMoreCommentsMessage
     false
         
     
