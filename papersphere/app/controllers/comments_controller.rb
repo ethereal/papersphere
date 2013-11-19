@@ -12,9 +12,10 @@ class CommentsController < ApplicationController
         format.js
       end
       # notify list members  
-      CommentAddedNotifier.delay.added(@comment)
+      deliver(@comment)
     end
   end
+
   
   def load_more_comments
     offset = params[:comments_offset].to_f
@@ -30,4 +31,17 @@ class CommentsController < ApplicationController
     @reading_list_paper = ReadingListPaper.find(params[:reading_list_paper_id])
   end
 
+  def deliver(comment)
+    reading_list = comment.reading_list_paper.reading_list
+    reading_list.reading_list_shares.each { |reading_list_share|
+      group = reading_list_share.group
+      group.group_members.each { |member|
+        #if the user wants this notification
+        if member.user.comment_added
+          user = member.user
+          CommentAddedNotifier.delay.added(comment, user)
+        end
+      }
+    } 
+  end
 end

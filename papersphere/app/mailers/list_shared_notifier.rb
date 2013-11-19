@@ -6,17 +6,10 @@ class ListSharedNotifier < ActionMailer::Base
   #
   #   en.list_shared_notifier.shared.subject
   #
-  def shared(firstname, reading_list_name, group)
-    @firstname = firstname
+  def shared(first_name, reading_list_name, user)
+    @firstname = first_name
     @reading_list_name = reading_list_name
-    @group = group
-    # send an email to each member of the group     
-    @group.group_members.each { |member|
-      #if the user wants this notification
-      if member.user.list_shared
-        @member = member
-        mail to: @member.user.email, subject: 'Reading list has been shared with you.' 
-      end
-    }
+    @user = user
+    mail to: @user.email, subject: 'Reading list has been shared with you.' 
   end
 end

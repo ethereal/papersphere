@@ -14,5 +14,13 @@ class Comment < ActiveRecord::Base
            end
     time.strftime("%A, %B #{time.day.ordinalize} at %-I:%M%P")
   end
+
+  def to_yaml_properties(wrap = true)
+    if wrap
+      self.class.new.to_yaml_properties(false)
+    else
+      super()
+    end
+  end
   
 end

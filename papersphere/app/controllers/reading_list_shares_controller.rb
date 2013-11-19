@@ -70,8 +70,8 @@ class ReadingListSharesController < ApplicationController
       
     respond_to do |format|
       if @reading_list_share.save
-        # notify group members  
-        ListSharedNotifier.delay.shared(@current_user.first_name, @reading_list.name, group)
+        # notify group members 
+        deliver(current_user.first_name, @reading_list.name, group)        
         format.html { redirect_to @reading_list_share.reading_list, notice: 'Reading list share was successfully created.' }
         format.json { render json: @reading_list_share, status: :created, location: @reading_list_share }
       else
@@ -127,4 +127,15 @@ class ReadingListSharesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
+  private
+  
+  def deliver(first_name, reading_list_name, group)
+    group.group_members.each { |member|
+      #if the user wants this notification
+      if member.user.list_shared
+        ListSharedNotifier.delay.shared(first_name, reading_list_name, member.user)  
+      end
+    }
+  end  
 end

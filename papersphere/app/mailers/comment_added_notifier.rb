@@ -6,18 +6,9 @@ class CommentAddedNotifier < ActionMailer::Base
   #
   #   en.comment_added_notifier.added.subject
   #
-  def added(comment)
+  def added(comment, user)
     @comment = comment
-    @reading_list = @comment.reading_list_paper.reading_list
-    @reading_list.reading_list_shares.each { |reading_list_share|
-      @group = reading_list_share.group
-      @group.group_members.each { |member|
-        #if the user wants this notification
-        if member.user.comment_added
-          @member = member
-          mail to: @member.user.email, subject: 'New comment has been added.' 
-        end
-      }
-    }
+    @user = user
+    mail to: @user.email, subject: 'New comment has been added.'     
   end
 end

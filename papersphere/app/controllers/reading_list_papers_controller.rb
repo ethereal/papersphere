@@ -76,8 +76,9 @@ class ReadingListPapersController < ApplicationController
       if result == ReadingList::TXN_SUCCESSFUL
         @paper_mgt_notification = "Paper titled '#{@paper.title}' was added to the list successfully."
         @success = true
-        # notify list members  
-        PaperAddedNotifier.delay.added(@current_user.first_name, @paper.title, @reading_list)
+        # notify list members 
+        deliver(current_user.first_name, @paper.title, @reading_list) 
+      
       elsif result == ReadingList::TXN_PAPER_ALREADY_IN_READING_LIST
         @paper_mgt_notification = "Paper '#{@paper.title}' already exists in the list."
       else
@@ -150,5 +151,20 @@ class ReadingListPapersController < ApplicationController
     respond_to do |format|
       format.js
     end
+  end
+
+  private
+
+  def deliver(first_name, paper_title, reading_list)
+    # send an email to each member of the reading list   
+    reading_list.reading_list_shares.each { |reading_list_share|
+      group = reading_list_share.group
+      group.group_members.each { |member|
+        #if the user wants this notification
+        if member.user.paper_added
+          PaperAddedNotifier.delay.added(first_name, paper_title, member.user, reading_list.name)      
+        end
+      }
+    }
   end
 end
