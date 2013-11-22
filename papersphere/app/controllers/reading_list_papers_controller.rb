@@ -92,6 +92,7 @@ class ReadingListPapersController < ApplicationController
 
     respond_to do |format|
       format.js
+      format.html { redirect_to @reading_list }
     end
   end
 
