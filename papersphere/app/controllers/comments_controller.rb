@@ -10,6 +10,7 @@ class CommentsController < ApplicationController
     if @comment.save
       respond_to do |format|
         format.js
+        format.html { redirect_to @reading_list_paper }
       end
       # notify list members  
       deliver(@comment)
