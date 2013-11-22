@@ -151,6 +151,7 @@ class ReadingListPapersController < ApplicationController
     @reading_list.reload
     respond_to do |format|
       format.js
+      format.html { redirect_to @reading_list }
     end
   end
 
