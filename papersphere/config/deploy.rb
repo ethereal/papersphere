@@ -1,5 +1,5 @@
 set :application, 'papersphere'
-set :repo_url, 'git@github.com:ethereal/papersphere.git'
+set :repo_url, 'http://github.com/ethereal/papersphere.git'
 
 # ask :branch, proc { `git rev-parse --abbrev-ref HEAD`.chomp }
 

@@ -3,19 +3,25 @@ set :stage, :production
 set :rvm_type, :user #Tell rvm to look in ~/.rvm
 set :rvm_ruby_version, '2.0.0-p247'
 
-server_host = ENV['PROD_SERVER_HOST']
+server_hosts = ENV['PROD_SERVER_HOSTS'].split " "
+db_host = ENV['DB_SERVER_HOST']
 access_key = ENV['PROD_SERVER_KEY']
 
-set :server_name, [ server_host ]
+if db_host.empty?
+  db_host = server_hosts[0]
+end
+
+set :server_names, server_hosts
+set :db_name, [ db_host ]
 
 # Simple Role Syntax
 # ==================
 # Supports bulk-adding hosts to roles, the primary
 # server in each group is considered to be the first
 # unless any hosts have the primary property set.
-role :web, fetch(:server_name) # Needed for pre-compiling assets
-role :app, fetch(:server_name) # Needed for preparing something I forgot what
-role :db, fetch(:server_name) # Needed for migration
+role :web, fetch(:server_names) # Needed for pre-compiling assets
+role :app, fetch(:server_names) # Needed for preparing something I forgot what
+role :db, fetch(:db_name) # Needed for migration
 role :all, fetch(:server_name) # This doesn't work completely yet, hence the above 3 specifications
 
 # Extended Server Syntax

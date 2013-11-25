@@ -2,7 +2,7 @@ namespace :setup do
     desc 'Change Directory Structure'
     task :change_dir_structure do
         subdir = 'papersphere'
-        on roles(:web) do
+        on roles(:app) do
             execute "mv #{release_path}/#{subdir}/ /tmp && rm -rf #{release_path}/* && mv /tmp/#{subdir}/* #{release_path} && rm -rf /tmp/#{subdir}"
         end
     end
@@ -22,9 +22,16 @@ namespace :setup do
     
     desc "Uploads SQL Dump"
     task :upload_mysql_dump => ENV['PROD_SQL_DUMP'] do |t|
-      on roles(:all) do
+      on roles(:db) do
         upload!(t.prerequisites.first, "#{current_path}/mysql_dump.sql")
         execute "mysql -uroot papersphere_production < #{current_path}/mysql_dump.sql"
       end
     end
+	
+	desc "Modifies /etc/hosts"
+	task :modify_etc_hosts do
+		on roles(:app) do
+			execute "echo '10.29.198.199 db.papersphere.net' >> /etc/hosts"
+		end
+	end
 end
