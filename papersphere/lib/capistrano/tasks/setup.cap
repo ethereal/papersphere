@@ -2,11 +2,22 @@ namespace :setup do
     desc 'Change Directory Structure'
     task :change_dir_structure do
         subdir = 'papersphere'
-        on roles(:app) do
+        on roles(:all) do
             execute "mv #{release_path}/#{subdir}/ /tmp && rm -rf #{release_path}/* && mv /tmp/#{subdir}/* #{release_path} && rm -rf /tmp/#{subdir}"
         end
     end
     after 'deploy:updating', 'setup:change_dir_structure'
+	
+	desc "Modifies /etc/hosts"
+	task :modify_etc_hosts do |t|
+	  on roles(:all) do
+	    if ! ENV['REMOVE_OLD_DB'].nil? && ENV['REMOVE_OLD_DB'] == "True"
+		  sudo "sed -i '$ d' /etc/hosts"
+		end
+		sudo "sed -i '$a #{ENV['PROD_DB_HOST_PRIV']} db.papersphere.net' /etc/hosts"
+      end
+	end
+	after 'setup:change_dir_structure', 'setup:modify_etc_hosts'
 
     desc 'Create Database'
     task :create_database do
@@ -16,7 +27,7 @@ namespace :setup do
             end
         end
     end
-    after 'setup:change_dir_structure', 'setup:create_database'
+    after 'setup:modify_etc_hosts', 'setup:create_database'
     before 'setup:create_database', 'rvm:hook'
     before 'setup:create_database', 'bundler:install'
     
@@ -27,11 +38,4 @@ namespace :setup do
         execute "mysql -uroot papersphere_production < #{current_path}/mysql_dump.sql"
       end
     end
-	
-	desc "Modifies /etc/hosts"
-	task :modify_etc_hosts do
-		on roles(:app) do
-			execute "echo '10.29.198.199 db.papersphere.net' >> /etc/hosts"
-		end
-	end
 end

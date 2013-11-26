@@ -1,13 +1,14 @@
 set :stage, :production
 
+set :use_sudo, true
 set :rvm_type, :user #Tell rvm to look in ~/.rvm
 set :rvm_ruby_version, '2.0.0-p247'
 
 server_hosts = ENV['PROD_SERVER_HOSTS'].split " "
-db_host = ENV['DB_SERVER_HOST']
+db_host = ENV['PROD_DB_HOST']
 access_key = ENV['PROD_SERVER_KEY']
 
-if db_host.empty?
+if db_host.nil? || db_host.empty?
   db_host = server_hosts[0]
 end
 

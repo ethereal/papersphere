@@ -8,7 +8,7 @@ set :user, %{ubuntu}
 set :use_sudo, false
 set :latest_release_directory, File.join(fetch(:deploy_to), 'current')
 set :scm, :git
-set :branch, "loadtesting"
+set :branch, "db-load-testing"
 set :deploy_subdir, "papersphere/papersphere"
 
 # set :format, :pretty
