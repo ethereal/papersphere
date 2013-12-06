@@ -39,5 +39,5 @@ production:
   pool: 5
   username: papersphere
   password: papersphere
-  host: papersphere.cwjm6inzwwil.us-west-1.rds.amazonaws.com
+  host: papersphere.cje4xdtu66al.ap-southeast-2.rds.amazonaws.com
   port: 3306
